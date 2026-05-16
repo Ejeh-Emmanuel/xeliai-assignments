@@ -1,0 +1,154 @@
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px;
+  width: 280px;
+  display: inline-block;
+  vertical-align: top;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.card--featured {
+  border: 2px solid #4f46e5;
+}
+
+.card__img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card__tag {
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin: 8px;
+  display: inline-block;
+}
+.card__body {
+  padding: 12px;
+}
+
+.card__title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card__desc {
+  font-size: 13px;
+  color: #475569;
+}
+
+.card__badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-small {
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
+.btn-medium {
+  padding: 8px 18px;
+  font-size: 14px;
+}
+
+.btn-large {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+/* Container to hold the avatar and the absolute-positioned dot */
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+/* Base image styling */
+.avatar-img {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Size Variants */
+.avatar-container.small .avatar-img {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar-container.medium .avatar-img {
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-container.large .avatar-img {
+  width: 80px;
+  height: 80px;
+}
+
+/* Status Indicator Dot */
+.avatar-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Dynamic dot sizes based on parent size */
+.avatar-container.small .avatar-badge {
+  width: 8px;
+  height: 8px;
+}
+
+.avatar-container.medium .avatar-badge {
+  width: 12px;
+  height: 12px;
+}
+
+.avatar-container.large .avatar-badge {
+  width: 16px;
+  height: 16px;
+}
