@@ -1,11 +1,14 @@
 import Counter from"./Components/Counter"
-import Temperature from "./Components/Temperature";
+import Counter2 from "./Components/Counter2";
+import Temperature from "./Components/Temp";
+import CharacterCounter from "./Components/Character";
 function App() {
   return (
     <div>
     <Counter/>
-    <Temperature/>
-
+    <Counter2/>
+    <Temperature/> 
+    <CharacterCounter/>
 
     </div>
   )

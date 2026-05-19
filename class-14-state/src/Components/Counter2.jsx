@@ -1,7 +1,6 @@
 import { useState } from "react";
-import "../index.css";
 
-function Temperature() {
+function Counter2() {
   // Stores the current counter value
   const [count, setCount] = useState(0);
 
@@ -32,19 +31,11 @@ function Temperature() {
   };
 
   // Dynamic color
-  let countColor = "black";
-
-  if (count > 10) {
-    countColor = "green";
-  } else if (count > 0) {
-    countColor = "blue";
-  } else {
-    countColor = "red";
-  }
+  const countColor = count > 10 ? "green" : count > 0 ? "blue" : "red";
 
   return (
     <div className="container">
-      <h1>Temperature App</h1>
+      <h1>Counter2 App</h1>
 
       <h2 style={{ color: countColor }}>
         Count: {count}
@@ -77,4 +68,4 @@ function Temperature() {
   );
 }
 
-export default Temperature;
+export default Counter2;
