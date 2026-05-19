@@ -1,0 +1,48 @@
+.counter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  margin-top: 100px;
+}
+
+.count-display {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #333;
+}
+
+.button-group button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  transition: background 0.2s;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+.alert-message {
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
