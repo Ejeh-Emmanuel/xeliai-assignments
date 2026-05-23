@@ -1,5 +1,4 @@
 import { useState } from "react";
-n
 
 function CharacterCounter() {
   // State for textarea content
