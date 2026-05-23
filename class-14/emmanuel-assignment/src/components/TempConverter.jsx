@@ -1,54 +1,61 @@
 import { useState } from "react";
 
 function TempConverter() {
-  // Single source of truth
-  const [celsius, setCelsius] = useState("");
+  // single raw value
+  const [temperature, setTemperature] = useState("");
+  const [scale, setScale] = useState("c"); // "c" or "f"
 
-  // Convert Celsius to Fahrenheit
+  // conversions
   function toFahrenheit(c) {
     return ((c * 9) / 5 + 32).toFixed(1);
   }
 
-  // Convert Fahrenheit to Celsius
   function toCelsius(f) {
     return (((f - 32) * 5) / 9).toFixed(1);
   }
 
-  // Handle Celsius input
+  // handlers
   function handleCelsiusChange(event) {
-    setCelsius(event.target.value);
+    setTemperature(event.target.value);
+    setScale("c");
   }
 
-  // Handle Fahrenheit input
   function handleFahrenheitChange(event) {
-    const fahrenheitValue = event.target.value;
-
-    if (fahrenheitValue === "") {
-      setCelsius("");
-    } else {
-      setCelsius(toCelsius(Number(fahrenheitValue)));
-    }
+    setTemperature(event.target.value);
+    setScale("f");
   }
 
-  // Reset both fields
+  // reset
   function resetFields() {
-    setCelsius("");
+    setTemperature("");
+    setScale("c");
   }
 
-  // Derived Fahrenheit value
-  const fahrenheit = celsius === "" ? "" : toFahrenheit(Number(celsius));
+  // derived values
+  const celsius =
+    temperature === ""
+      ? ""
+      : scale === "f"
+        ? toCelsius(Number(temperature))
+        : temperature;
 
-  // Temperature label
+  const fahrenheit =
+    temperature === ""
+      ? ""
+      : scale === "c"
+        ? toFahrenheit(Number(temperature))
+        : temperature;
+
+  // label based on Celsius
   function getTemperatureLabel() {
-    const temp = Number(celsius);
+    if (temperature === "") return "";
 
-    if (celsius === "") return "";
+    const temp = Number(celsius);
 
     if (temp <= 0) return "Freezing";
     if (temp <= 15) return "Cold";
     if (temp <= 25) return "Room Temperature";
     if (temp <= 35) return "Warm";
-
     return "Hot";
   }
 
@@ -59,13 +66,11 @@ function TempConverter() {
       <div>
         <div>
           <label>Celsius: </label>
-
           <input type="number" value={celsius} onChange={handleCelsiusChange} />
         </div>
 
         <div>
           <label>Fahrenheit: </label>
-
           <input
             type="number"
             value={fahrenheit}
