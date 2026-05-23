@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 15+16: Lists, Data & AI — XELI AI Labs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0e27;color:#f5f7fa;line-height:1.4}
+.slide{width:1200px;height:675px;margin:20px auto;background:linear-gradient(135deg,#1a1f3a 0%,#0f1729 100%);padding:35px 45px;position:relative;border:1px solid #2d3748;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.title-slide{justify-content:center;align-items:center;text-align:center}
+.section-tag{position:absolute;top:12px;right:20px;background:rgba(99,102,241,.2);border:1px solid #6366f1;color:#6366f1;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.slide-header{position:absolute;top:12px;left:20px;font-size:12px;font-weight:700;color:#6366f1;letter-spacing:1px}
+.slide-number{position:absolute;bottom:12px;right:20px;font-size:11px;color:#a0aec0;font-weight:500}
+h1{font-size:50px;font-weight:800;margin-bottom:15px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+h2{font-size:28px;font-weight:700;margin-bottom:12px;color:#f5f7fa}
+h3{font-size:19px;font-weight:600;margin-bottom:8px;color:#6366f1}
+p{font-size:14.5px;margin-bottom:8px;color:#cbd5e0;line-height:1.5}
+.subtitle{font-size:20px;color:#a0aec0;font-weight:400;margin-top:-5px;margin-bottom:15px}
+ul,ol{margin-left:20px;margin-bottom:10px}
+li{font-size:13.5px;margin-bottom:6px;color:#cbd5e0;line-height:1.5}
+li strong{color:#6366f1;font-weight:600}
+pre{background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.6;box-shadow:0 4px 12px rgba(0,0,0,.3);overflow:hidden}
+code{font-family:'Fira Code',monospace;color:#ec4899;background:rgba(99,102,241,.1);padding:2px 5px;border-radius:3px;font-size:12.5px}
+.cc{color:#64748b}.ck{color:#6366f1;font-weight:600}.cs{color:#10b981}.cmd{color:#fbbf24}.cb{color:#f97316}.cp{color:#ec4899}.ch{color:#8b5cf6}.ct{color:#f07178}.ca{color:#ffcb6b}.cj{color:#89ddff}
+.info-box{background:rgba(99,102,241,.1);border-left:4px solid #6366f1;padding:10px 14px;margin:6px 0;border-radius:5px}
+.warn-box{background:rgba(245,158,11,.1);border-left:4px solid #f59e0b;padding:10px 14px;margin:6px 0;border-radius:5px}
+.succ-box{background:rgba(16,185,129,.1);border-left:4px solid #10b981;padding:10px 14px;margin:6px 0;border-radius:5px}
+.err-box{background:rgba(239,68,68,.1);border-left:4px solid #ef4444;padding:10px 14px;margin:6px 0;border-radius:5px}
+/* NEW: Plain English box — the key "dumb it down" element */
+.plain-box{background:rgba(251,191,36,.08);border-left:4px solid #fbbf24;border-radius:5px;padding:10px 14px;margin:6px 0}
+.plain-title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fbbf24;margin-bottom:5px}
+/* AI section colour — distinct teal/cyan */
+.ai-box{background:rgba(6,182,212,.1);border-left:4px solid #06b6d4;padding:10px 14px;margin:6px 0;border-radius:5px}
+.ai-tag{position:absolute;top:12px;right:20px;background:rgba(6,182,212,.2);border:1px solid #06b6d4;color:#06b6d4;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.live-badge{display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(16,185,129,.4)}
+.live-badge::before{content:"⚡ "}
+.ai-badge{display:inline-block;background:linear-gradient(135deg,#06b6d4,#0284c7);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(6,182,212,.4)}
+.ai-badge::before{content:"🤖 "}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.pat-box{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.15));border:1px solid rgba(99,102,241,.4);border-radius:8px;padding:10px 14px;margin:6px 0}
+.pat-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px}
+.col-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.old-lbl{color:#ef4444}.new-lbl{color:#10b981}
+strong{color:#6366f1;font-weight:600}
+.green{color:#10b981}.red{color:#ef4444}.yellow{color:#fbbf24}.orange{color:#f97316}.pink{color:#ec4899}.cyan{color:#0ea5e9}.teal{color:#06b6d4}
+.slide::before{content:'';position:absolute;width:280px;height:280px;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 70%);border-radius:50%;top:-80px;right:-80px;pointer-events:none}
+.step-chip{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(99,102,241,.25);border:2px solid #6366f1;color:#6366f1;font-size:12px;font-weight:800;flex-shrink:0;margin-right:10px}
+.num-big{font-size:40px;font-weight:800;color:#6366f1;line-height:1}
+/* Prompt example block for AI slides */
+.prompt-block{background:#0a1628;border:1px solid #06b6d4;border-radius:8px;padding:10px 14px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.7}
+.prompt-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#06b6d4;margin-bottom:6px}
+.combined-badge{display:inline-block;background:linear-gradient(135deg,#f97316,#ec4899);color:white;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;margin:0 4px}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — TITLE -->
+<div class="slide title-slide">
+  <div style="margin-bottom:10px">
+    <span style="font-size:13px;color:#6366f1;font-weight:700;letter-spacing:3px;text-transform:uppercase">XELI AI LABS • Frontend Engineering</span>
+  </div>
+  <h1 style="font-size:52px">CLASS 15 + 16</h1>
+  <h2 style="font-size:32px;margin-top:6px;background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Lists, Data Fetching &amp; AI Tools 🤖</h2>
+  <p class="subtitle" style="font-size:18px;margin-top:16px">Two classes. One session. And your new best friend: AI.</p>
+  <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(16,185,129,.15);border:1px solid #10b981;color:#10b981;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Rendering Lists</span>
+    <span style="background:rgba(99,102,241,.15);border:1px solid #6366f1;color:#6366f1;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">useEffect</span>
+    <span style="background:rgba(14,165,233,.15);border:1px solid #0ea5e9;color:#0ea5e9;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Data Fetching</span>
+    <span style="background:rgba(6,182,212,.15);border:1px solid #06b6d4;color:#06b6d4;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">🤖 AI Coding Tools</span>
+    <span style="background:rgba(249,115,22,.15);border:1px solid #f97316;color:#f97316;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">26 Slides</span>
+  </div>
+  <div class="slide-number">1 / 26</div>
+</div>
+
+
+<!-- SLIDE 2 — WHAT WE'RE DOING TODAY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Agenda</div><div class="slide-number">2 / 26</div>
+  <h2>Today's Game Plan 🗺️</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:12px">We're combining two classes into one tighter session. Here's what we're covering:</p>
+  <div class="three-col" style="margin-top:4px">
+    <div style="background:#0f1729;border:1px solid #10b981;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 1 — 45 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">Lists &amp; Conditionals</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.9;color:#a0aec0">
+        <li>Rendering lists with .map()</li>
+        <li>The key prop</li>
+        <li>Showing &amp; hiding things</li>
+        <li>Build: a Todo List</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #6366f1;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 2 — 45 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">useEffect &amp; APIs</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.9;color:#a0aec0">
+        <li>What is useEffect?</li>
+        <li>Fetching data from APIs</li>
+        <li>Loading &amp; error states</li>
+        <li>Build: live data app</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #06b6d4;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 3 — 45 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">🤖 AI as Your Partner</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.9;color:#a0aec0">
+        <li>GitHub Copilot setup</li>
+        <li>Prompting Claude/ChatGPT</li>
+        <li>Debugging with AI</li>
+        <li>The golden rule</li>
+      </ul>
+    </div>
+  </div>
+  <div class="succ-box" style="margin-top:12px">
+    <p style="font-size:13px;text-align:center"><strong>By the end of today:</strong> You'll fetch real data from the internet, display it as a list, and know how to use AI to help you code faster. That's a full developer skill set. 🚀</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 3 — PART 1 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">3 / 26</div>
+  <div style="margin-bottom:16px">
+    <span style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:3px;text-transform:uppercase">Part 1 of 3</span>
+  </div>
+  <p style="font-size:60px;margin-bottom:10px">📋</p>
+  <h1 style="font-size:48px">Lists &amp; Conditionals</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Rendering arrays. Showing and hiding things.</p>
+  <div class="succ-box" style="max-width:600px;margin:20px auto 0">
+    <p style="font-size:14px;color:#10b981;font-weight:600">You already know .map() from JavaScript. In React, it becomes your superpower for building UIs from data.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 4 — RENDERING LISTS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Rendering Lists</div><div class="slide-number">4 / 26</div>
+  <h2>Rendering a List — The .map() Pattern</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24">You have an array of items (names, products, users, jokes). You want to show each one on screen. Instead of writing the same JSX 10 times, you use <code>.map()</code> to turn the array into JSX automatically.</p>
+  </div>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <p class="col-lbl old-lbl">❌ Writing it manually (the painful way)</p>
+      <pre><span class="cc">// You have 10 foods. Do you write this 10 times?</span>
+<span class="ct">&lt;p&gt;</span>Jollof Rice<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;p&gt;</span>Suya<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;p&gt;</span>Puff Puff<span class="ct">&lt;/p&gt;</span>
+<span class="ct">&lt;p&gt;</span>Egusi Soup<span class="ct">&lt;/p&gt;</span>
+<span class="cc">// ... 6 more lines? NO! ❌</span></pre>
+    </div>
+    <div>
+      <p class="col-lbl new-lbl">✅ Using .map() — write it ONCE</p>
+      <pre><span class="ck">const</span> foods = [<span class="cs">'Jollof Rice'</span>, <span class="cs">'Suya'</span>, <span class="cs">'Puff Puff'</span>, <span class="cs">'Egusi'</span>];
+
+<span class="ck">const</span> <span class="cmd">FoodList</span> = () => (
+  <span class="ct">&lt;ul&gt;</span>
+    <span class="cj">{</span>foods.<span class="cmd">map</span>(food => (
+      <span class="ct">&lt;li</span> <span class="ca">key</span><span class="cj">={</span>food<span class="cj">}</span><span class="ct">&gt;</span><span class="cj">{</span>food<span class="cj">}</span><span class="ct">&lt;/li&gt;</span>
+    ))<span class="cj">}</span>
+  <span class="ct">&lt;/ul&gt;</span>
+);</pre>
+      <div class="succ-box" style="margin-top:6px">
+        <p style="font-size:12px"><strong>Add 100 more foods to the array.</strong> The JSX doesn't change at all. React renders all of them automatically. ✅</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:6px">
+    <p style="font-size:12px"><strong>⚠️ See that <code>key={food}</code>?</strong> That's required. Every item in a .map() list needs a unique key. Next slide explains why.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 5 — THE KEY PROP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Rendering Lists</div><div class="slide-number">5 / 26</div>
+  <h2>The <code>key</code> Prop — Why React Needs It</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Imagine you have 5 identical-looking boxes on a conveyor belt. How do you tell them apart? You label them: Box 1, Box 2, Box 3...
+        <br><br>
+        React does the same thing with your list items. The <code>key</code> is the label. It helps React know which item changed when your list updates.</p>
+      </div>
+      <div class="err-box">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">❌ Wrong — using array index</p>
+        <pre style="font-size:9.5px;margin:0">{items.<span class="cmd">map</span>((item, <span class="cb">index</span>) => (
+  <span class="ct">&lt;li</span> <span class="ca">key</span><span class="cj">={</span><span class="cb">index</span><span class="cj">}</span><span class="ct">&gt;</span><span class="cj">{</span>item<span class="cj">}</span><span class="ct">&lt;/li&gt;</span>
+))}
+<span class="cc">// If list order changes, keys change too. Bugs!</span></pre>
+      </div>
+    </div>
+    <div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Right — use a unique ID</p>
+        <pre style="font-size:9.5px;margin:0"><span class="ck">const</span> users = [
+  { <span class="ca">id</span>: <span class="cp">1</span>, <span class="ca">name</span>: <span class="cs">'Tolu'</span> },
+  { <span class="ca">id</span>: <span class="cp">2</span>, <span class="ca">name</span>: <span class="cs">'Emeka'</span> },
+];
+
+{users.<span class="cmd">map</span>(user => (
+  <span class="ct">&lt;li</span> <span class="ca">key</span><span class="cj">={</span>user.id<span class="cj">}</span><span class="ct">&gt;</span><span class="cj">{</span>user.name<span class="cj">}</span><span class="ct">&lt;/li&gt;</span>
+))}</pre>
+      </div>
+      <div class="pat-box">
+        <p class="pat-title">The 3 Rules of Keys</p>
+        <ul style="font-size:12.5px;margin-left:14px;line-height:1.85;color:#cbd5e0">
+          <li><strong>Must be unique</strong> among siblings</li>
+          <li><strong>Use IDs</strong> from your data, not array index</li>
+          <li><strong>Goes on the outermost element</strong> in .map()</li>
+        </ul>
+      </div>
+      <div class="warn-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0">Missing key = yellow warning in console. React will still work, but slower and with potential bugs on re-renders.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 6 — LISTS WITH OBJECTS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Rendering Lists</div><div class="slide-number">6 / 26</div>
+  <h2>Real Lists — Arrays of Objects</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre style="font-size:9.5px"><span class="cc">// src/components/StudentList.jsx</span>
+<span class="ck">const</span> students = [
+  { id: <span class="cp">1</span>, name: <span class="cs">'Chiamaka'</span>, score: <span class="cp">74</span>, city: <span class="cs">'Onitsha'</span>  },
+  { id: <span class="cp">2</span>, name: <span class="cs">'Bayo'</span>,     score: <span class="cp">88</span>, city: <span class="cs">'Ibadan'</span>  },
+  { id: <span class="cp">3</span>, name: <span class="cs">'Ngozi'</span>,    score: <span class="cp">55</span>, city: <span class="cs">'Enugu'</span>   },
+  { id: <span class="cp">4</span>, name: <span class="cs">'Tunde'</span>,    score: <span class="cp">92</span>, city: <span class="cs">'Lagos'</span>   },
+];
+
+<span class="ck">const</span> <span class="cmd">StudentList</span> = () => (
+  <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"student-list"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h2&gt;</span>Students<span class="ct">&lt;/h2&gt;</span>
+    {students.<span class="cmd">map</span>(student => (
+      <span class="ct">&lt;div</span> <span class="ca">key</span><span class="cj">={</span>student.id<span class="cj">}</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"student-card"</span><span class="ct">&gt;</span>
+        <span class="ct">&lt;h3&gt;</span><span class="cj">{</span>student.name<span class="cj">}</span><span class="ct">&lt;/h3&gt;</span>
+        <span class="ct">&lt;p&gt;</span>Score: <span class="cj">{</span>student.score<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+        <span class="ct">&lt;p&gt;</span>City: <span class="cj">{</span>student.city<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+      <span class="ct">&lt;/div&gt;</span>
+    ))}
+  <span class="ct">&lt;/div&gt;</span>
+);</pre>
+    </div>
+    <div>
+      <div class="info-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">The Pattern — memorise this:</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11.5px;line-height:2.1;color:#cbd5e0">
+          <div>1. <span style="color:#10b981">Start with your data array</span></div>
+          <div>2. <span style="color:#fbbf24">Call .map() on it</span></div>
+          <div>3. <span style="color:#6366f1">Return JSX for each item</span></div>
+          <div>4. <span style="color:#ec4899">Add key={item.id}</span></div>
+        </div>
+      </div>
+      <div class="pat-box">
+        <p class="pat-title">Combine with spread operator</p>
+        <pre style="font-size:9.5px;margin:0"><span class="cc">// You can also spread all props at once:</span>
+{students.<span class="cmd">map</span>(s => (
+  <span class="ct">&lt;StudentCard</span>
+    <span class="ca">key</span><span class="cj">={</span>s.id<span class="cj">}</span>
+    <span class="cj">{...s}</span>   <span class="cc">← passes all fields as props</span>
+  <span class="ct">/&gt;</span>
+))}</pre>
+      </div>
+      <div class="succ-box" style="margin-top:8px">
+        <p style="font-size:12.5px;margin:0"><strong>Add a 5th student to the array.</strong> The page updates automatically. No JSX changes. This is why React exists.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 7 — CONDITIONAL RENDERING -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Conditionals</div><div class="slide-number">7 / 26</div>
+  <h2>Showing &amp; Hiding Things — 3 Simple Patterns</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24">Sometimes you want to show a "Welcome back!" message only if the user is logged in. Or show "Out of Stock" only when an item has no stock. You only want to render something <em>when a condition is true</em>. These three patterns cover 95% of cases.</p>
+  </div>
+  <div class="three-col" style="align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:5px;text-transform:uppercase">Pattern 1: && (show OR nothing)</p>
+      <pre style="font-size:9.5px"><span class="cc">// Only shows if isLoggedIn is true</span>
+<span class="cj">{</span>isLoggedIn &amp;&amp;
+  <span class="ct">&lt;p&gt;</span>Welcome back! 👋<span class="ct">&lt;/p&gt;</span>
+<span class="cj">}</span>
+
+<span class="cc">// Only shows badge if isPassing</span>
+<span class="cj">{</span>score >= <span class="cp">60</span> &amp;&amp;
+  <span class="ct">&lt;span&gt;</span>✅ Passed<span class="ct">&lt;/span&gt;</span>
+<span class="cj">}</span></pre>
+      <div class="succ-box" style="margin-top:4px;padding:6px 10px">
+        <p style="font-size:11px">Use when: show something OR show nothing.</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#6366f1;margin-bottom:5px;text-transform:uppercase">Pattern 2: Ternary (A or B)</p>
+      <pre style="font-size:9.5px"><span class="cc">// Shows one OR the other</span>
+<span class="ct">&lt;p&gt;</span>
+  <span class="cj">{</span>isLoggedIn
+    ? <span class="cs">'Welcome back!'</span>
+    : <span class="cs">'Please log in'</span>
+  <span class="cj">}</span>
+<span class="ct">&lt;/p&gt;</span>
+
+<span class="cc">// Button text changes:</span>
+<span class="ct">&lt;button&gt;</span>
+  <span class="cj">{</span>liked ? <span class="cs">'❤️ Liked'</span> : <span class="cs">'🤍 Like'</span><span class="cj">}</span>
+<span class="ct">&lt;/button&gt;</span></pre>
+      <div class="succ-box" style="margin-top:4px;padding:6px 10px">
+        <p style="font-size:11px">Use when: show A if true, B if false.</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:5px;text-transform:uppercase">Pattern 3: Early Return</p>
+      <pre style="font-size:9.5px"><span class="cc">// Return something completely different</span>
+<span class="ck">const</span> <span class="cmd">Profile</span> = ({ user }) => {
+
+  <span class="cc">// If no user, bail out early</span>
+  <span class="ck">if</span> (!user) <span class="ck">return</span> (
+    <span class="ct">&lt;p&gt;</span>Loading...<span class="ct">&lt;/p&gt;</span>
+  );
+
+  <span class="cc">// Otherwise show the real profile</span>
+  <span class="ck">return</span> <span class="ct">&lt;h2&gt;</span><span class="cj">{</span>user.name<span class="cj">}</span><span class="ct">&lt;/h2&gt;</span>;
+};</pre>
+      <div class="succ-box" style="margin-top:4px;padding:6px 10px">
+        <p style="font-size:11px">Use when: the whole component changes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 8 — TODO LIST LIVE BUILD -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Live Coding</div><div class="slide-number">8 / 26</div>
+  <h2>Live Build — Todo List (Lists + State Together)</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre style="font-size:9px"><span class="ck">import</span> { useState } <span class="ck">from</span> <span class="cs">'react'</span>;
+
+<span class="ck">const</span> <span class="cmd">TodoList</span> = () => {
+  <span class="ck">const</span> [todos, setTodos]   = <span class="cmd">useState</span>([]);
+  <span class="ck">const</span> [input, setInput]   = <span class="cmd">useState</span>(<span class="cs">''</span>);
+
+  <span class="cc">// Add a new todo</span>
+  <span class="ck">const</span> <span class="cmd">addTodo</span> = () => {
+    <span class="ck">if</span> (!input.trim()) <span class="ck">return</span>; <span class="cc">// ignore empty</span>
+    <span class="cmd">setTodos</span>(prev => [
+      ...prev,
+      { id: Date.<span class="cmd">now</span>(), text: input, done: <span class="cp">false</span> }
+    ]);
+    <span class="cmd">setInput</span>(<span class="cs">''</span>); <span class="cc">// clear input</span>
+  };
+
+  <span class="cc">// Toggle done/not done</span>
+  <span class="ck">const</span> <span class="cmd">toggleTodo</span> = (id) => {
+    <span class="cmd">setTodos</span>(prev => prev.<span class="cmd">map</span>(t =>
+      t.id === id ? { ...t, done: !t.done } : t
+    ));
+  };
+
+  <span class="cc">// Delete a todo</span>
+  <span class="ck">const</span> <span class="cmd">deleteTodo</span> = (id) => {
+    <span class="cmd">setTodos</span>(prev => prev.<span class="cmd">filter</span>(t => t.id !== id));
+  };
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      <span class="ct">&lt;input</span> <span class="ca">value</span><span class="cj">={</span>input<span class="cj">}</span>
+             <span class="ca">onChange</span><span class="cj">={</span>e => <span class="cmd">setInput</span>(e.target.value)<span class="cj">}</span>
+             <span class="ca">placeholder</span><span class="cj">=</span><span class="cs">"Add a task..."</span> <span class="ct">/&gt;</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={</span>addTodo<span class="cj">}</span><span class="ct">&gt;</span>Add<span class="ct">&lt;/button&gt;</span>
+
+      <span class="cj">{</span>todos.<span class="cmd">map</span>(todo => (
+        <span class="ct">&lt;div</span> <span class="ca">key</span><span class="cj">={</span>todo.id<span class="cj">}</span><span class="ct">&gt;</span>
+          <span class="ct">&lt;span</span> <span class="ca">style</span><span class="cj">={{</span>
+            textDecoration: todo.done ? <span class="cs">'line-through'</span> : <span class="cs">'none'</span>
+          <span class="cj">}}</span><span class="ct">&gt;</span><span class="cj">{</span>todo.text<span class="cj">}</span><span class="ct">&lt;/span&gt;</span>
+          <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={() =></span> <span class="cmd">toggleTodo</span>(todo.id)<span class="cj">}</span><span class="ct">&gt;</span>✓<span class="ct">&lt;/button&gt;</span>
+          <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={() =></span> <span class="cmd">deleteTodo</span>(todo.id)<span class="cj">}</span><span class="ct">&gt;</span>✕<span class="ct">&lt;/button&gt;</span>
+        <span class="ct">&lt;/div&gt;</span>
+      ))<span class="cj">}</span>
+
+      <span class="cc">{/* Conditional: show count only if todos exist */}</span>
+      <span class="cj">{</span>todos.length > <span class="cp">0</span> &amp;&amp;
+        <span class="ct">&lt;p&gt;</span><span class="cj">{</span>todos.<span class="cmd">filter</span>(t => !t.done).length<span class="cj">}</span> remaining<span class="ct">&lt;/p&gt;</span>
+      <span class="cj">}</span>
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 What's happening here</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#fbbf24">
+          <li><code>todos</code> is an array in state</li>
+          <li><code>input</code> is the controlled text box</li>
+          <li>Add: spread old todos + new one</li>
+          <li>Toggle: .map() through, flip done</li>
+          <li>Delete: .filter() removes by id</li>
+          <li>Display: .map() renders the list</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">3 concepts working together:</p>
+        <p style="font-size:12px;color:#a0aec0"><strong>useState</strong> (from Class 14) → stores the list<br><strong>.map()</strong> → renders each item<br><strong>Conditional</strong> → shows count only when needed</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 9 — PART 2 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">9 / 26</div>
+  <div style="margin-bottom:16px">
+    <span style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:3px;text-transform:uppercase">Part 2 of 3</span>
+  </div>
+  <p style="font-size:60px;margin-bottom:10px">🌐</p>
+  <h1 style="font-size:48px">useEffect &amp; Data Fetching</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Getting real data from the internet into your app.</p>
+  <div class="info-box" style="max-width:620px;margin:20px auto 0">
+    <p style="font-size:14px;color:#6366f1;font-weight:600">So far, your data was written by hand in the code. Real apps get their data from APIs — servers that send you fresh information. useEffect is how React talks to those servers.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 10 — WHAT IS USEEFFECT -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">useEffect</div><div class="slide-number">10 / 26</div>
+  <h2>useEffect — "Do This When Something Happens"</h2>
+  <div class="two-col" style="align-items:start;margin-top:6px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Think of useEffect like telling your phone: <em>"When I open WhatsApp, download my new messages."</em>
+        <br><br>
+        In React: <em>"When this component appears on screen, go fetch some data."</em>
+        <br><br>
+        It runs code <strong>after</strong> the component renders — not during. This keeps React fast.</p>
+      </div>
+      <pre style="font-size:10px"><span class="ck">import</span> { useState, useEffect } <span class="ck">from</span> <span class="cs">'react'</span>;
+
+<span class="ck">const</span> <span class="cmd">MyComponent</span> = () => {
+
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cc">// This code runs AFTER the component renders</span>
+    console.<span class="cmd">log</span>(<span class="cs">'Component appeared!'</span>);
+
+  }, []); <span class="cc">// ← the [] means: run ONCE on mount</span>
+
+  <span class="ck">return</span> <span class="ct">&lt;p&gt;</span>Hello<span class="ct">&lt;/p&gt;</span>;
+};</pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:10px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">The Dependency Array — The Most Important Part</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.2;color:#cbd5e0">
+          <div><code style="font-size:10px">useEffect(() =&gt; {}, [])</code></div>
+          <div style="color:#10b981;font-size:11px">↑ Empty [] = run once when component loads</div>
+          <div style="margin-top:8px"><code style="font-size:10px">useEffect(() =&gt; {}, [userId])</code></div>
+          <div style="color:#6366f1;font-size:11px">↑ [userId] = run when userId changes</div>
+          <div style="margin-top:8px"><code style="font-size:10px">useEffect(() =&gt; {})</code></div>
+          <div style="color:#ef4444;font-size:11px">↑ No [] = runs on EVERY render (usually wrong!)</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <p style="font-size:12px"><strong>⚠️ Forgetting the [] is the most common mistake.</strong> Without it, your useEffect runs on every single render — which usually causes an infinite loop.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 11 — FETCHING DATA -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Data Fetching</div><div class="slide-number">11 / 26</div>
+  <h2>Fetching Data — The Standard Pattern</h2>
+  <div class="plain-box" style="margin-bottom:8px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24">An API is like a waiter. You say "I want a random joke", the waiter goes to the kitchen (the server), gets it, and brings it back. This takes a moment — so while you wait, you show a loading spinner. If the waiter spills the food, you show an error message.</p>
+  </div>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <pre style="font-size:9.5px"><span class="ck">import</span> { useState, useEffect } <span class="ck">from</span> <span class="cs">'react'</span>;
+
+<span class="ck">const</span> <span class="cmd">JokeApp</span> = () => {
+  <span class="ck">const</span> [joke, setJoke]       = <span class="cmd">useState</span>(<span class="cp">null</span>);
+  <span class="ck">const</span> [loading, setLoading] = <span class="cmd">useState</span>(<span class="cp">true</span>);
+  <span class="ck">const</span> [error, setError]     = <span class="cmd">useState</span>(<span class="cp">null</span>);
+
+  <span class="ck">const</span> <span class="cmd">fetchJoke</span> = <span class="ck">async</span> () => {
+    <span class="cmd">setLoading</span>(<span class="cp">true</span>);
+    <span class="cmd">setError</span>(<span class="cp">null</span>);
+    <span class="ck">try</span> {
+      <span class="ck">const</span> res  = <span class="ck">await</span> <span class="cmd">fetch</span>(
+        <span class="cs">'https://official-joke-api.appspot.com/random_joke'</span>
+      );
+      <span class="ck">const</span> data = <span class="ck">await</span> res.<span class="cmd">json</span>();
+      <span class="cmd">setJoke</span>(data);
+    } <span class="ck">catch</span> (err) {
+      <span class="cmd">setError</span>(<span class="cs">'Could not load joke 😢'</span>);
+    } <span class="ck">finally</span> {
+      <span class="cmd">setLoading</span>(<span class="cp">false</span>);
+    }
+  };
+
+  <span class="cc">// Fetch when component loads</span>
+  <span class="cmd">useEffect</span>(() => { <span class="cmd">fetchJoke</span>(); }, []);
+
+  <span class="ck">if</span> (loading) <span class="ck">return</span> <span class="ct">&lt;p&gt;</span>Loading...<span class="ct">&lt;/p&gt;</span>;
+  <span class="ck">if</span> (error)   <span class="ck">return</span> <span class="ct">&lt;p&gt;</span><span class="cj">{</span>error<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>;
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      <span class="ct">&lt;p&gt;</span><span class="cj">{</span>joke.setup<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+      <span class="ct">&lt;p&gt;</span><span class="cj">{</span>joke.punchline<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={</span>fetchJoke<span class="cj">}</span><span class="ct">&gt;</span>Next Joke<span class="ct">&lt;/button&gt;</span>
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">The 3 States Every API Call Needs</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center">
+            <span class="step-chip">1</span>
+            <p style="font-size:12px;margin:0;color:#fbbf24"><strong>loading</strong> — show spinner while waiting</p>
+          </div>
+          <div style="display:flex;align-items:center">
+            <span class="step-chip">2</span>
+            <p style="font-size:12px;margin:0;color:#ef4444"><strong>error</strong> — show message if it fails</p>
+          </div>
+          <div style="display:flex;align-items:center">
+            <span class="step-chip">3</span>
+            <p style="font-size:12px;margin:0;color:#10b981"><strong>data</strong> — show content when it works</p>
+          </div>
+        </div>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px"><strong>This pattern works for every API call you'll ever write.</strong> Change the URL, change what you display — everything else stays the same.</p>
+      </div>
+      <div class="warn-box" style="margin-top:6px">
+        <p style="font-size:11.5px"><strong>Free APIs to practice with:</strong><br>
+        Jokes: <code>official-joke-api.appspot.com</code><br>
+        Users: <code>randomuser.me/api</code><br>
+        Quotes: <code>quotable.io/random</code></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 12 — DISPLAYING API DATA IN A LIST -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Data Fetching</div><div class="slide-number">12 / 26</div>
+  <h2>Fetching a List — .map() Meets useEffect</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre style="font-size:9.5px"><span class="cc">// Fetch 5 random users and display them as cards</span>
+<span class="ck">import</span> { useState, useEffect } <span class="ck">from</span> <span class="cs">'react'</span>;
+
+<span class="ck">const</span> <span class="cmd">UserFeed</span> = () => {
+  <span class="ck">const</span> [users, setUsers]     = <span class="cmd">useState</span>([]);
+  <span class="ck">const</span> [loading, setLoading] = <span class="cmd">useState</span>(<span class="cp">true</span>);
+
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cmd">fetch</span>(<span class="cs">'https://randomuser.me/api/?results=5'</span>)
+      .<span class="cmd">then</span>(res => res.<span class="cmd">json</span>())
+      .<span class="cmd">then</span>(data => {
+        <span class="cmd">setUsers</span>(data.results);
+        <span class="cmd">setLoading</span>(<span class="cp">false</span>);
+      });
+  }, []); <span class="cc">// ← run once</span>
+
+  <span class="ck">if</span> (loading) <span class="ck">return</span> <span class="ct">&lt;p&gt;</span>Loading users...<span class="ct">&lt;/p&gt;</span>;
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"user-feed"</span><span class="ct">&gt;</span>
+      {users.<span class="cmd">map</span>(user => (
+        <span class="ct">&lt;div</span> <span class="ca">key</span><span class="cj">={</span>user.login.uuid<span class="cj">}</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"user-card"</span><span class="ct">&gt;</span>
+          <span class="ct">&lt;img</span> <span class="ca">src</span><span class="cj">={</span>user.picture.medium<span class="cj">}</span> <span class="ca">alt</span><span class="cj">=</span><span class="cs">"user"</span> <span class="ct">/&gt;</span>
+          <span class="ct">&lt;h3&gt;</span><span class="cj">{</span>user.name.first<span class="cj">}</span> <span class="cj">{</span>user.name.last<span class="cj">}</span><span class="ct">&lt;/h3&gt;</span>
+          <span class="ct">&lt;p&gt;</span><span class="cj">{</span>user.email<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+        <span class="ct">&lt;/div&gt;</span>
+      ))}
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <div class="info-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:5px">What just happened — step by step:</p>
+        <ol style="font-size:12px;margin-left:16px;line-height:1.9;color:#a0aec0">
+          <li>Component renders, shows "Loading users..."</li>
+          <li>useEffect fires after render</li>
+          <li>fetch() calls the randomuser.me API</li>
+          <li>API returns 5 user objects as JSON</li>
+          <li>setUsers() stores them in state</li>
+          <li>setLoading(false) triggers re-render</li>
+          <li>.map() turns each user into a card</li>
+          <li>5 cards appear on screen ✅</li>
+        </ol>
+      </div>
+      <div class="pat-box">
+        <p class="pat-title">Reload vs Refetch</p>
+        <p style="font-size:12px;color:#cbd5e0">To get new users without page reload, just call <code>fetchUsers()</code> from a button's onClick. React refetches and re-renders the new list.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 13 — LOADING & ERROR STATES PROPERLY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">UX Patterns</div><div class="slide-number">13 / 26</div>
+  <h2>Loading &amp; Error States — Don't Leave Users Confused</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Ever open an app and it just shows a blank white screen? That's bad UX. Always show the user what's happening — whether it's loading, broken, or empty.</p>
+      </div>
+      <pre style="font-size:9.5px"><span class="ck">const</span> <span class="cmd">DataComponent</span> = () => {
+  <span class="ck">const</span> [data, setData]       = <span class="cmd">useState</span>([]);
+  <span class="ck">const</span> [loading, setLoading] = <span class="cmd">useState</span>(<span class="cp">true</span>);
+  <span class="ck">const</span> [error, setError]     = <span class="cmd">useState</span>(<span class="cp">null</span>);
+
+  <span class="cc">// ... fetch logic in useEffect</span>
+
+  <span class="cc">// Handle each state with early returns:</span>
+  <span class="ck">if</span> (loading) <span class="ck">return</span> (
+    <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"loader"</span><span class="ct">&gt;</span>⏳ Loading...<span class="ct">&lt;/div&gt;</span>
+  );
+
+  <span class="ck">if</span> (error) <span class="ck">return</span> (
+    <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"error"</span><span class="ct">&gt;</span>
+      ❌ <span class="cj">{</span>error<span class="cj">}</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={</span>fetchData<span class="cj">}</span><span class="ct">&gt;</span>Try again<span class="ct">&lt;/button&gt;</span>
+    <span class="ct">&lt;/div&gt;</span>
+  );
+
+  <span class="ck">if</span> (data.length === <span class="cp">0</span>) <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>📭 No data found.<span class="ct">&lt;/div&gt;</span>
+  );
+
+  <span class="cc">// Only reach here if everything worked:</span>
+  <span class="ck">return</span> <span class="ct">&lt;div&gt;</span>{data.<span class="cmd">map</span>(...)}<span class="ct">&lt;/div&gt;</span>;
+};</pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">The 4 States Every Data Component Has</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">⏳</span>
+            <div><p style="font-size:12px;font-weight:700;color:#fbbf24;margin:0">Loading</p><p style="font-size:11px;color:#a0aec0;margin:0">Show a spinner or "Loading..." text</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">❌</span>
+            <div><p style="font-size:12px;font-weight:700;color:#ef4444;margin:0">Error</p><p style="font-size:11px;color:#a0aec0;margin:0">Show what went wrong + a retry button</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">📭</span>
+            <div><p style="font-size:12px;font-weight:700;color:#a0aec0;margin:0">Empty</p><p style="font-size:11px;color:#a0aec0;margin:0">Show "No results found" — not a blank page</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">✅</span>
+            <div><p style="font-size:12px;font-weight:700;color:#10b981;margin:0">Success</p><p style="font-size:11px;color:#a0aec0;margin:0">Render the actual data</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;margin:0"><strong>Professional apps always handle all four.</strong> Check any real app — Twitter, Instagram, Google — they never show a blank screen. Neither should yours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 14 — USEEFFECT WITH DEPENDENCY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">useEffect</div><div class="slide-number">14 / 26</div>
+  <h2>useEffect with Dependencies — Re-fetch When Things Change</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Imagine you're searching for products. Every time you change what you're searching for, the app should go fetch new results. That's what the dependency array does — it re-runs the effect whenever the listed value changes.</p>
+      </div>
+      <pre style="font-size:9.5px"><span class="ck">const</span> <span class="cmd">ProductSearch</span> = () => {
+  <span class="ck">const</span> [query, setQuery]       = <span class="cmd">useState</span>(<span class="cs">'phone'</span>);
+  <span class="ck">const</span> [results, setResults]   = <span class="cmd">useState</span>([]);
+  <span class="ck">const</span> [loading, setLoading]   = <span class="cmd">useState</span>(<span class="cp">false</span>);
+
+  <span class="cc">// Re-runs every time 'query' changes</span>
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cmd">setLoading</span>(<span class="cp">true</span>);
+    <span class="cmd">fetch</span>(<span class="cs">`https://fakestoreapi.com/products?q=<span class="cj">${</span>query<span class="cj">}</span>`</span>)
+      .<span class="cmd">then</span>(r => r.<span class="cmd">json</span>())
+      .<span class="cmd">then</span>(data => {
+        <span class="cmd">setResults</span>(data);
+        <span class="cmd">setLoading</span>(<span class="cp">false</span>);
+      });
+  }, [query]); <span class="cc">// ← re-fetch when query changes</span>
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      <span class="ct">&lt;input</span>
+        <span class="ca">value</span><span class="cj">={</span>query<span class="cj">}</span>
+        <span class="ca">onChange</span><span class="cj">={</span>e => <span class="cmd">setQuery</span>(e.target.value)<span class="cj">}</span>
+        <span class="ca">placeholder</span><span class="cj">=</span><span class="cs">"Search..."</span>
+      <span class="ct">/&gt;</span>
+      {loading &amp;&amp; <span class="ct">&lt;p&gt;</span>Searching...<span class="ct">&lt;/p&gt;</span>}
+      {results.<span class="cmd">map</span>(p => (
+        <span class="ct">&lt;p</span> <span class="ca">key</span><span class="cj">={</span>p.id<span class="cj">}</span><span class="ct">&gt;</span><span class="cj">{</span>p.title<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+      ))}
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <div class="info-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:5px">Dependency Array Cheat Sheet</p>
+        <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.2;color:#cbd5e0">
+          <div><span style="color:#ec4899">[]</span> &nbsp;&nbsp;&nbsp; Run once when component mounts</div>
+          <div><span style="color:#fbbf24">[x]</span>&nbsp;&nbsp; Run when x changes</div>
+          <div><span style="color:#fbbf24">[x,y]</span> Run when x OR y changes</div>
+          <div><span style="color:#ef4444">none</span>&nbsp; Run every render (bad!)</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <p style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:4px">⚠️ Common Mistake: Infinite Loop</p>
+        <pre style="font-size:9px;margin:0"><span class="cc">// ❌ This loops forever!</span>
+<span class="cmd">useEffect</span>(() => {
+  <span class="cmd">setData</span>(something); <span class="cc">// updates state</span>
+}, [data]);             <span class="cc">// watches state → loops!</span>
+
+<span class="cc">// Fix: remove data from the dependency array</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 15 — MINI RECAP BEFORE AI SECTION -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Recap</div><div class="slide-number">15 / 26</div>
+  <h2>Quick Recap — Before We Meet Your New Coding Partner 🤖</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="succ-box">
+      <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Part 1: Lists ✅</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li><code>.map()</code> turns arrays into JSX</li>
+        <li><code>key</code> must be unique — use IDs</li>
+        <li><code>&&</code> = show OR nothing</li>
+        <li>Ternary = show A or B</li>
+        <li>Early return for big changes</li>
+      </ul>
+    </div>
+    <div class="info-box">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Part 2: Data ✅</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li><code>useEffect</code> runs after render</li>
+        <li><code>[]</code> = run once on load</li>
+        <li><code>fetch()</code> gets data from APIs</li>
+        <li>Always: loading + error + data states</li>
+        <li><code>[dep]</code> = re-fetch when dep changes</li>
+      </ul>
+    </div>
+    <div class="pat-box">
+      <p style="font-size:11px;font-weight:700;color:#8b5cf6;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Part 3: Coming Up 🤖</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+        <li>GitHub Copilot in VS Code</li>
+        <li>Prompting Claude for React help</li>
+        <li>Paste errors → get explanations</li>
+        <li>Review code with AI</li>
+        <li>The golden rule of AI coding</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:12px">
+    <p style="font-size:13.5px;text-align:center"><strong>Quick check — turn to your neighbour:</strong> Explain in ONE sentence what useEffect does. If you can say it simply, you understand it.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 16 — PART 3 DIVIDER: AI -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">16 / 26</div>
+  <div style="margin-bottom:16px">
+    <span style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:3px;text-transform:uppercase">Part 3 of 3 — NEW SECTION</span>
+  </div>
+  <p style="font-size:70px;margin-bottom:10px">🤖</p>
+  <h1 style="font-size:46px">AI as Your Coding Partner</h1>
+  <p style="font-size:20px;color:#a0aec0;margin-top:10px">How to use AI to code faster, debug smarter, and learn deeper.</p>
+  <div class="ai-box" style="max-width:700px;margin:20px auto 0">
+    <p style="font-size:14px;color:#06b6d4;font-weight:600">Every developer you admire uses AI tools. Not because they don't know how to code — because they're smart about what to spend their time on. Today you join them.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 17 — THE AI TOOLS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">AI Tools</div><div class="slide-number">17 / 26</div>
+  <h2>The 3 AI Tools Every Developer Uses 🛠️</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:2px solid #06b6d4;border-radius:10px;padding:16px">
+      <div style="font-size:32px;margin-bottom:8px">🤖</div>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">GitHub Copilot</p>
+      <p style="font-size:11px;color:#64748b;margin-bottom:8px">Inside VS Code • Paid (free trial)</p>
+      <p style="font-size:12px;color:#a0aec0;line-height:1.7">Sits inside VS Code. As you type, it suggests code completions. Like autocomplete — but it writes whole functions for you.</p>
+      <div class="ai-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#06b6d4;margin:0"><strong>Best for:</strong> completing functions, generating boilerplate</p>
+      </div>
+    </div>
+    <div style="background:#0f1729;border:2px solid #10b981;border-radius:10px;padding:16px">
+      <div style="font-size:32px;margin-bottom:8px">⚡</div>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">Claude (Anthropic)</p>
+      <p style="font-size:11px;color:#64748b;margin-bottom:8px">claude.ai • Free tier available</p>
+      <p style="font-size:12px;color:#a0aec0;line-height:1.7">Excellent at understanding context. Paste your whole component, describe the problem, get a clear explanation and fix. Great for "why doesn't this work?"</p>
+      <div class="succ-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#10b981;margin:0"><strong>Best for:</strong> debugging, understanding errors, code review</p>
+      </div>
+    </div>
+    <div style="background:#0f1729;border:2px solid #8b5cf6;border-radius:10px;padding:16px">
+      <div style="font-size:32px;margin-bottom:8px">💬</div>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">ChatGPT</p>
+      <p style="font-size:11px;color:#64748b;margin-bottom:8px">chat.openai.com • Free tier available</p>
+      <p style="font-size:12px;color:#a0aec0;line-height:1.7">Great for step-by-step explanations and generating first drafts of components. Good at answering "how do I..." questions.</p>
+      <div class="pat-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#8b5cf6;margin:0"><strong>Best for:</strong> generating starter code, learning new concepts</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:12px">
+    <p style="font-size:13px;text-align:center"><strong>⚠️ The Golden Rule:</strong> AI generates code. <em>You</em> are responsible for understanding it before you use it. Never paste code you don't understand into your project.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 18 — GITHUB COPILOT SETUP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">GitHub Copilot</div><div class="slide-number">18 / 26</div>
+  <h2>Setting Up GitHub Copilot in VS Code</h2>
+  <span class="ai-badge">Setup Together</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px">
+        <p style="font-size:10px;font-weight:700;color:#06b6d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Step-by-Step Setup</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start">
+            <span class="step-chip">1</span>
+            <p style="font-size:12px;margin:0;color:#cbd5e0">Go to <strong style="color:#06b6d4">github.com/copilot</strong> and sign up (free trial available for students)</p>
+          </div>
+          <div style="display:flex;align-items:flex-start">
+            <span class="step-chip">2</span>
+            <p style="font-size:12px;margin:0;color:#cbd5e0">In VS Code, open Extensions (<code>Ctrl+Shift+X</code>) and search <strong>"GitHub Copilot"</strong></p>
+          </div>
+          <div style="display:flex;align-items:flex-start">
+            <span class="step-chip">3</span>
+            <p style="font-size:12px;margin:0;color:#cbd5e0">Install it, then sign in with your GitHub account when prompted</p>
+          </div>
+          <div style="display:flex;align-items:flex-start">
+            <span class="step-chip">4</span>
+            <p style="font-size:12px;margin:0;color:#cbd5e0">Open any <code>.jsx</code> file and start typing. Suggestions appear in grey — press <strong>Tab</strong> to accept</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="ai-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px">How to Use Copilot in JSX</p>
+        <pre style="font-size:9.5px;margin:0;background:transparent;border:none;padding:0"><span class="cc">// Type a comment describing what you want:</span>
+<span class="cc">// A button that copies text to clipboard</span>
+
+<span class="cc">// Then Copilot suggests the full function.</span>
+<span class="cc">// Press Tab to accept. Review before keeping.</span>
+
+<span class="cc">// Or start typing and it autocompletes:</span>
+<span class="ck">const</span> <span class="cmd">fetchUser</span> = <span class="ck">async</span> (id) => {
+  <span class="cc">// ← Copilot fills in the rest</span>
+}</span></pre>
+      </div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Copilot is great for:</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Generating boilerplate component structure</li>
+          <li>Completing repetitive patterns</li>
+          <li>Writing CSS you'd normally Google</li>
+          <li>Filling in obvious next lines</li>
+        </ul>
+      </div>
+      <div class="warn-box">
+        <p style="font-size:12px;margin:0">Don't just Tab-accept everything. Read what Copilot writes. It's sometimes wrong or outdated. You are the developer — Copilot is the assistant.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 19 — HOW TO PROMPT AI FOR REACT HELP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Prompting</div><div class="slide-number">19 / 26</div>
+  <h2>How to Ask AI for Help — Prompting That Works</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:8px">The quality of the answer depends entirely on the quality of the question. Here's the difference:</p>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <p class="col-lbl old-lbl">❌ Bad prompts (get vague answers)</p>
+      <div class="prompt-block">
+        <div class="prompt-label">You typed:</div>
+        <span style="color:#ef4444">"my code doesn't work fix it"</span>
+        <br><br>
+        <span style="color:#ef4444">"how do I make react work"</span>
+        <br><br>
+        <span style="color:#ef4444">"useEffect help"</span>
+      </div>
+      <div class="err-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0">AI has no context. It gives a generic answer that doesn't match your problem. You're going in circles.</p>
+      </div>
+    </div>
+    <div>
+      <p class="col-lbl new-lbl">✅ Good prompts (get precise fixes)</p>
+      <div class="prompt-block">
+        <div class="prompt-label">You typed:</div>
+        <span style="color:#10b981">"I'm building a React app with Vite. I have a useEffect that fetches from an API, but it's running in an infinite loop. Here's my code: [paste code]. What's causing the loop and how do I fix it?"</span>
+      </div>
+      <div class="succ-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0">AI has all the context. It identifies your dependency array mistake and gives you the exact fix with an explanation.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pat-box" style="margin-top:10px">
+    <p class="pat-title">The 4-Part Prompt Formula</p>
+    <p style="font-size:13px;color:#cbd5e0"><strong style="color:#06b6d4">Context</strong> (I'm using React + Vite) &nbsp;+&nbsp; <strong style="color:#10b981">What I'm trying to do</strong> (fetch user data) &nbsp;+&nbsp; <strong style="color:#fbbf24">What's going wrong</strong> (infinite loop) &nbsp;+&nbsp; <strong style="color:#ec4899">My code</strong> (paste it)</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 20 — DEBUGGING WITH AI -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Debugging with AI</div><div class="slide-number">20 / 26</div>
+  <h2>Debugging with AI — Paste the Error, Get the Fix</h2>
+  <span class="ai-badge">Live Demo</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">You see this error in the console:</p>
+      <div style="background:#1a0a0a;border:1px solid #ef4444;border-radius:8px;padding:12px;font-family:'Fira Code',monospace;font-size:10px;color:#ef4444;line-height:1.8">
+        TypeError: Cannot read properties of undefined<br>
+        (reading 'map')<br><br>
+        at StudentList (StudentList.jsx:12)<br>
+        at renderWithHooks<br>
+        ...
+      </div>
+      <div class="warn-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">This used to mean: 30 minutes of Googling. Now it means: 30 seconds with AI.</p>
+      </div>
+      <div class="prompt-block" style="margin-top:8px">
+        <div class="prompt-label">What to paste into Claude or ChatGPT:</div>
+        <span style="color:#06b6d4">"I'm getting this error in my React component: [paste the full error]. Here's my component code: [paste the code]. What's causing it and how do I fix it?"</span>
+      </div>
+    </div>
+    <div>
+      <div class="ai-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px">What AI will tell you:</p>
+        <p style="font-size:12px;color:#a0aec0;line-height:1.7">The error <code>"Cannot read properties of undefined (reading 'map')"</code> means you're calling <code>.map()</code> on something that isn't an array — it's <code>undefined</code>. This usually happens because:<br><br>
+        1. Your API response has a different structure than expected<br>
+        2. Your state starts as <code>null</code> instead of <code>[]</code><br><br>
+        <strong style="color:#06b6d4">Fix:</strong> Change <code>useState(null)</code> to <code>useState([])</code>, or add a guard: <code>data?.map(...)</code></p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Ask AI to explain, not just fix</p>
+        <p style="font-size:12px;color:#a0aec0">Add "explain why this happened" to your prompt. Understanding the error means you won't make the same mistake twice.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 21 — AI FOR UNDERSTANDING CODE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Learning with AI</div><div class="slide-number">21 / 26</div>
+  <h2>Using AI to Learn — Not Just to Copy</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="ai-box" style="margin-bottom:10px">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px">Ask AI to explain code you don't understand</p>
+        <div class="prompt-block" style="background:#0a1628;border-color:#2d3748;margin-top:6px">
+          <div class="prompt-label" style="color:#a0aec0">Prompt:</div>
+          <span style="color:#cbd5e0">"Explain this React code to me line by line, as if I'm a beginner: [paste code]"</span>
+        </div>
+      </div>
+      <div class="ai-box" style="margin-bottom:10px">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px">Ask AI to review your code</p>
+        <div class="prompt-block" style="background:#0a1628;border-color:#2d3748;margin-top:6px">
+          <div class="prompt-label" style="color:#a0aec0">Prompt:</div>
+          <span style="color:#cbd5e0">"Review this React component. Tell me: is there anything wrong? Are there better ways to write this? Am I handling errors correctly? [paste code]"</span>
+        </div>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px">Ask AI to simplify something confusing</p>
+        <div class="prompt-block" style="background:#0a1628;border-color:#2d3748;margin-top:6px">
+          <div class="prompt-label" style="color:#a0aec0">Prompt:</div>
+          <span style="color:#cbd5e0">"I don't understand the dependency array in useEffect. Explain it using a simple, everyday analogy. No jargon."</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:10px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">What NOT to do with AI</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#cbd5e0">
+          <li class="red">❌ Ask AI to write your entire homework</li>
+          <li class="red">❌ Copy AI code without reading it</li>
+          <li class="red">❌ Submit AI code as your understanding</li>
+          <li class="red">❌ Trust AI blindly — it makes mistakes</li>
+        </ul>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:5px">✅ The Smart Way to Use AI</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+          <li>Try the problem yourself first — even 10 mins</li>
+          <li>Ask AI to explain the concept, then write the code</li>
+          <li>Use AI code as a model, then write your own version</li>
+          <li>After AI gives an answer, ask: "why does this work?"</li>
+        </ul>
+      </div>
+      <div class="warn-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0"><strong>In your capstone project:</strong> interviewers will ask you to explain your code. If AI wrote it and you don't understand it, you'll fail the interview. Use AI to learn faster — not to skip learning.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 22 — THE GOLDEN RULE -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Golden Rule</div><div class="slide-number">22 / 26</div>
+  <p style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">The Golden Rule of AI Coding</p>
+  <div style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(99,102,241,.15));border:1px solid rgba(6,182,212,.4);border-radius:12px;padding:30px 40px;max-width:800px;margin:0 auto">
+    <p style="font-size:32px;font-weight:800;color:#f5f7fa;line-height:1.4;margin-bottom:12px">"AI is your <span style="color:#06b6d4">assistant</span>.<br>You are the <span style="color:#10b981">developer</span>."</p>
+    <p style="font-size:16px;color:#a0aec0;margin:0">You set the direction. You make the decisions. You understand the code. AI does the repetitive and the annoying. That split of responsibility is what separates a <strong style="color:#f5f7fa">professional</strong> from someone who just pastes code until it works.</p>
+  </div>
+  <div style="margin-top:24px;display:flex;gap:20px;justify-content:center">
+    <div style="text-align:center">
+      <p style="font-size:28px">🤖</p>
+      <p style="font-size:12px;color:#a0aec0">AI writes<br>boilerplate</p>
+    </div>
+    <div style="font-size:24px;color:#6366f1;padding-top:8px">+</div>
+    <div style="text-align:center">
+      <p style="font-size:28px">🧠</p>
+      <p style="font-size:12px;color:#a0aec0">You understand<br>the logic</p>
+    </div>
+    <div style="font-size:24px;color:#6366f1;padding-top:8px">=</div>
+    <div style="text-align:center">
+      <p style="font-size:28px">🚀</p>
+      <p style="font-size:12px;color:#a0aec0">You ship faster<br>and grow smarter</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 23 — PRACTICAL AI WORKFLOW -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Workflow</div><div class="slide-number">23 / 26</div>
+  <h2>Your AI-Assisted Coding Workflow — Step by Step</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:10px">Follow this every time you build a new feature. It's how professional developers use AI today.</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px 14px">
+      <span class="step-chip">1</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Understand the task</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">Read the requirement. Know WHAT you're building before you touch any AI.</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px 14px">
+      <span class="step-chip">2</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Try it yourself first — even 10 minutes</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">Write some code. If you're stuck, that's the perfect time to ask AI.</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;background:#0a1628;border:1px solid #06b6d4;border-radius:8px;padding:10px 14px">
+      <span class="step-chip" style="border-color:#06b6d4;color:#06b6d4;background:rgba(6,182,212,.2)">3</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin:0">Ask AI with full context — paste your code + describe the problem</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">Use the 4-part prompt formula. Never just say "help me".</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px 14px">
+      <span class="step-chip">4</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Read AI's answer carefully — don't just copy-paste</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">Ask "why does this work?" until you understand it. Then type it yourself.</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px 14px">
+      <span class="step-chip">5</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Test it. Break it. Fix it.</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">AI code isn't always right. Test edge cases. Use React DevTools. If it breaks, go back to step 3.</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;background:#0a1a12;border:1px solid #10b981;border-radius:8px;padding:10px 14px">
+      <span class="step-chip" style="border-color:#10b981;color:#10b981;background:rgba(16,185,129,.2)">6</span>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin:0">Ship it. Be proud. You built something real.</p>
+        <p style="font-size:11.5px;color:#a0aec0;margin:0">Using AI tools is a skill. You're developing it right now.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 24 — FREE APIS TO PRACTICE WITH -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Resources</div><div class="slide-number">24 / 26</div>
+  <h2>Free APIs for Your Homework &amp; Projects 🌐</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:10px">All of these are free, need no API key, and work perfectly with <code>fetch()</code> in React.</p>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px">
+        <p style="font-size:10px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">No API Key Required</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Random Jokes</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">official-joke-api.appspot.com/random_joke</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Random Users</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">randomuser.me/api/?results=10</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Random Quotes</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">quotable.io/random</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Fake Products</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">fakestoreapi.com/products</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Countries</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">restcountries.com/v3.1/all</p></div>
+          <div><p style="font-size:12px;font-weight:700;color:#f5f7fa;margin:0">Cat Facts 🐱</p><p style="font-size:10.5px;font-family:'Fira Code';color:#06b6d4;margin:0">catfact.ninja/fact</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="pat-box" style="margin-bottom:8px">
+        <p class="pat-title">How to Test Any API Before Coding</p>
+        <ol style="font-size:12px;margin-left:16px;line-height:1.85;color:#cbd5e0">
+          <li>Open a new browser tab</li>
+          <li>Paste the API URL in the address bar</li>
+          <li>You'll see the raw JSON response</li>
+          <li>Look at the structure — what fields are there?</li>
+          <li>Now you know exactly what to display in your component</li>
+        </ol>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:4px">🤖 AI Tip: Understanding API Responses</p>
+        <p style="font-size:12px;color:#a0aec0">Paste the raw JSON response into Claude or ChatGPT and say: "Explain the structure of this API response. What fields should I use to display a user card?"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 25 — CLASS SUMMARY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Summary</div><div class="slide-number">25 / 26</div>
+  <h2>Class 15+16 — What You Now Know</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="succ-box">
+      <p style="font-size:10px;font-weight:700;color:#10b981;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Lists &amp; Conditionals</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li><code>.map()</code> renders arrays as JSX</li>
+        <li><code>key</code> must be unique — use IDs</li>
+        <li><code>&&</code> shows OR shows nothing</li>
+        <li>Ternary shows A or B</li>
+        <li>Early return for big state changes</li>
+      </ul>
+    </div>
+    <div class="info-box">
+      <p style="font-size:10px;font-weight:700;color:#6366f1;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">useEffect &amp; Data</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li><code>useEffect</code> runs after render</li>
+        <li><code>[]</code> = run once on mount</li>
+        <li><code>[dep]</code> = run when dep changes</li>
+        <li>Always handle loading + error + empty</li>
+        <li><code>fetch()</code> + <code>async/await</code></li>
+      </ul>
+    </div>
+    <div class="ai-box">
+      <p style="font-size:10px;font-weight:700;color:#06b6d4;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">AI Tools</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>GitHub Copilot in VS Code</li>
+        <li>Claude for debugging + review</li>
+        <li>4-part prompt formula</li>
+        <li>Paste errors → get explanations</li>
+        <li>AI assists. You understand.</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:12px;background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(6,182,212,.15));border:1px solid rgba(6,182,212,.4);border-radius:8px;padding:14px;text-align:center">
+    <p style="font-size:15px;font-weight:800;color:#f5f7fa;margin-bottom:4px">The Big Picture 🌍</p>
+    <p style="font-size:13px;color:#a0aec0;max-width:700px;margin:0 auto">You can now: build a list from data, fetch that data from the internet, handle every possible state, AND use AI to speed up your work. That's a full-stack of frontend skills. You are genuinely becoming a developer.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 26 — HOMEWORK PREVIEW -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Homework</div><div class="slide-number">26 / 26</div>
+  <h2>Class 15+16 Homework — 2 Projects (Manageable!)</h2>
+  <div class="two-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:2px solid #10b981;border-radius:10px;padding:16px">
+      <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Project 1 — 50 pts</p>
+      <p style="font-size:15px;font-weight:700;color:#f5f7fa;margin-bottom:8px">Todo List App</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>Add tasks with a text input</li>
+        <li>List of tasks (rendered with .map())</li>
+        <li>Tick off a task (strikethrough)</li>
+        <li>Delete individual tasks</li>
+        <li>Show count of remaining tasks</li>
+        <li>Clear all completed button</li>
+      </ul>
+      <div class="ai-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#06b6d4;margin:0">🤖 Stuck? Ask AI: "Explain how to delete an item from a React state array without mutating state."</p>
+      </div>
+    </div>
+    <div style="background:#0f1729;border:2px solid #6366f1;border-radius:10px;padding:16px">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Project 2 — 50 pts</p>
+      <p style="font-size:15px;font-weight:700;color:#f5f7fa;margin-bottom:8px">Live Data App (your choice!)</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>Fetch from ANY free API</li>
+        <li>Display results as a list/grid</li>
+        <li>Show loading state while fetching</li>
+        <li>Show error message if fetch fails</li>
+        <li>A "Refresh / Get New" button</li>
+        <li>Style it nicely</li>
+      </ul>
+      <div class="ai-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#06b6d4;margin:0">🤖 Hint: Start with the Joke API — it's the simplest. Once it works, swap the URL for any other API.</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:10px">
+    <p style="font-size:13px;text-align:center"><strong>⏱ Estimated time: 4–5 hours total. &nbsp;•&nbsp; Use AI tools. &nbsp;•&nbsp; But understand everything you submit.</strong></p>
+  </div>
+</div>
+
+</body>
+</html>

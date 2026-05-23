@@ -2,6 +2,7 @@ import Avatar from "./components/Avatar";
 import "./index.css";
 import Badge from "./Components/Badge";
 import Alert from "./Components/Alert";
+import Card from "./Components/Card";
 
 export default function App() {
   return (
@@ -86,6 +87,36 @@ export default function App() {
         type="info"
         title="Information"
         message="New updates are available for download."
+      />
+
+
+       <Card
+        title="Learn React"
+        description="React helps you build interactive UIs easily."
+        image="https://images.unsplash.com/photo-1633356122544-f134324a6cee"
+        tag="React"
+        featured={true}
+        onClick={() => alert("React Card Clicked")}
+      />
+
+      <Card
+        title="UI Design Basics"
+        description="Understand spacing, typography, and color systems."
+        image="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+        tag="Design"
+      />
+
+      <Card
+        title="JavaScript Essentials"
+        description="Master variables, functions, arrays, and objects."
+        image="https://images.unsplash.com/photo-1555066931-4365d14bab8c"
+        tag="JavaScript"
+      />
+
+      <Card
+        title="Frontend Development"
+        description="Build modern responsive websites and apps."
+        featured={true}
       />
 
 
