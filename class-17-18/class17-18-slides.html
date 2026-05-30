@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 17+18: React Router & Mini Project — XELI AI Labs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0e27;color:#f5f7fa;line-height:1.4}
+.slide{width:1200px;height:675px;margin:20px auto;background:linear-gradient(135deg,#1a1f3a 0%,#0f1729 100%);padding:35px 45px;position:relative;border:1px solid #2d3748;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.title-slide{justify-content:center;align-items:center;text-align:center}
+.section-tag{position:absolute;top:12px;right:20px;background:rgba(99,102,241,.2);border:1px solid #6366f1;color:#6366f1;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.slide-header{position:absolute;top:12px;left:20px;font-size:12px;font-weight:700;color:#6366f1;letter-spacing:1px}
+.slide-number{position:absolute;bottom:12px;right:20px;font-size:11px;color:#a0aec0;font-weight:500}
+h1{font-size:50px;font-weight:800;margin-bottom:15px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+h2{font-size:28px;font-weight:700;margin-bottom:12px;color:#f5f7fa}
+h3{font-size:19px;font-weight:600;margin-bottom:8px;color:#6366f1}
+p{font-size:14.5px;margin-bottom:8px;color:#cbd5e0;line-height:1.5}
+.subtitle{font-size:20px;color:#a0aec0;font-weight:400;margin-top:-5px;margin-bottom:15px}
+ul,ol{margin-left:20px;margin-bottom:10px}
+li{font-size:13.5px;margin-bottom:6px;color:#cbd5e0;line-height:1.5}
+li strong{color:#6366f1;font-weight:600}
+pre{background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.6;box-shadow:0 4px 12px rgba(0,0,0,.3);overflow:hidden}
+code{font-family:'Fira Code',monospace;color:#ec4899;background:rgba(99,102,241,.1);padding:2px 5px;border-radius:3px;font-size:12.5px}
+.cc{color:#64748b}.ck{color:#6366f1;font-weight:600}.cs{color:#10b981}.cmd{color:#fbbf24}.cb{color:#f97316}.cp{color:#ec4899}.ch{color:#8b5cf6}.ct{color:#f07178}.ca{color:#ffcb6b}.cj{color:#89ddff}
+.info-box{background:rgba(99,102,241,.1);border-left:4px solid #6366f1;padding:10px 14px;margin:6px 0;border-radius:5px}
+.warn-box{background:rgba(245,158,11,.1);border-left:4px solid #f59e0b;padding:10px 14px;margin:6px 0;border-radius:5px}
+.succ-box{background:rgba(16,185,129,.1);border-left:4px solid #10b981;padding:10px 14px;margin:6px 0;border-radius:5px}
+.err-box{background:rgba(239,68,68,.1);border-left:4px solid #ef4444;padding:10px 14px;margin:6px 0;border-radius:5px}
+.plain-box{background:rgba(251,191,36,.08);border-left:4px solid #fbbf24;border-radius:5px;padding:10px 14px;margin:6px 0}
+.plain-title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fbbf24;margin-bottom:5px}
+.ai-box{background:rgba(6,182,212,.1);border-left:4px solid #06b6d4;padding:10px 14px;margin:6px 0;border-radius:5px}
+.ai-tag{position:absolute;top:12px;right:20px;background:rgba(6,182,212,.2);border:1px solid #06b6d4;color:#06b6d4;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.proj-tag{position:absolute;top:12px;right:20px;background:rgba(249,115,22,.2);border:1px solid #f97316;color:#f97316;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.live-badge{display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(16,185,129,.4)}
+.live-badge::before{content:"⚡ "}
+.ai-badge{display:inline-block;background:linear-gradient(135deg,#06b6d4,#0284c7);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(6,182,212,.4)}
+.ai-badge::before{content:"🤖 "}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.pat-box{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.15));border:1px solid rgba(99,102,241,.4);border-radius:8px;padding:10px 14px;margin:6px 0}
+.pat-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px}
+.col-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.old-lbl{color:#ef4444}.new-lbl{color:#10b981}
+strong{color:#6366f1;font-weight:600}
+.green{color:#10b981}.red{color:#ef4444}.yellow{color:#fbbf24}.orange{color:#f97316}.pink{color:#ec4899}.cyan{color:#0ea5e9}.teal{color:#06b6d4}
+.slide::before{content:'';position:absolute;width:280px;height:280px;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 70%);border-radius:50%;top:-80px;right:-80px;pointer-events:none}
+.step-chip{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(99,102,241,.25);border:2px solid #6366f1;color:#6366f1;font-size:12px;font-weight:800;flex-shrink:0;margin-right:10px}
+.route-pill{display:inline-block;background:rgba(249,115,22,.15);border:1px solid #f97316;color:#f97316;padding:2px 9px;border-radius:8px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin:2px}
+.hook-pill{display:inline-block;background:rgba(236,72,153,.15);border:1px solid #ec4899;color:#ec4899;padding:2px 9px;border-radius:8px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin:2px}
+.prompt-block{background:#0a1628;border:1px solid #06b6d4;border-radius:8px;padding:10px 14px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.7}
+.prompt-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#06b6d4;margin-bottom:6px}
+.proj-card{background:#0f1729;border-radius:10px;padding:14px}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — TITLE -->
+<div class="slide title-slide">
+  <div style="margin-bottom:10px">
+    <span style="font-size:13px;color:#6366f1;font-weight:700;letter-spacing:3px;text-transform:uppercase">XELI AI LABS • Frontend Engineering</span>
+  </div>
+  <h1 style="font-size:52px">CLASS 17 + 18</h1>
+  <h2 style="font-size:32px;margin-top:6px;background:linear-gradient(135deg,#f97316,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">React Router &amp; Mini Project Kickoff 🗺️</h2>
+  <p class="subtitle" style="font-size:18px;margin-top:16px">Give your app real pages. Then build something real with them.</p>
+  <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(249,115,22,.15);border:1px solid #f97316;color:#f97316;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">React Router</span>
+    <span style="background:rgba(99,102,241,.15);border:1px solid #6366f1;color:#6366f1;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">useParams + useNavigate</span>
+    <span style="background:rgba(16,185,129,.15);border:1px solid #10b981;color:#10b981;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Project Planning</span>
+    <span style="background:rgba(6,182,212,.15);border:1px solid #06b6d4;color:#06b6d4;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">🤖 AI-Assisted Build</span>
+    <span style="background:rgba(139,92,246,.15);border:1px solid #8b5cf6;color:#8b5cf6;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">26 Slides</span>
+  </div>
+  <div class="slide-number">1 / 26</div>
+</div>
+
+
+<!-- SLIDE 2 — AGENDA -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Agenda</div><div class="slide-number">2 / 26</div>
+  <h2>Today's Game Plan 🗺️</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:14px">Three blocks. By the end you'll have multiple working pages AND a running start on your biggest project yet.</p>
+  <div class="three-col">
+    <div style="background:#0f1729;border:1px solid #f97316;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#f97316;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 1 — 50 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">React Router</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>What is routing? SPAs</li>
+        <li>Install + basic setup</li>
+        <li>Route, Link, NavLink</li>
+        <li>useParams (dynamic pages)</li>
+        <li>useNavigate (go back)</li>
+        <li>404 page</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #10b981;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 2 — 25 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">Code Quality</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>Component structure rules</li>
+        <li>Folder organisation</li>
+        <li>State strategy patterns</li>
+        <li>Planning with AI</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #06b6d4;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 3 — 55 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">🚀 Mini Project Kickoff</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>Project options + specs</li>
+        <li>Plan your component tree</li>
+        <li>Set up with AI assistance</li>
+        <li>Live build: scaffold together</li>
+      </ul>
+    </div>
+  </div>
+  <div class="succ-box" style="margin-top:10px">
+    <p style="font-size:13px;text-align:center"><strong>By the end of today:</strong> Your app will have real navigable pages, and you'll have a running skeleton for your mini project. The biggest project of this course begins now. 🔥</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 3 — PART 1 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">3 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#f97316;letter-spacing:3px;text-transform:uppercase">Part 1 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">🗺️</p>
+  <h1 style="font-size:48px">React Router</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Give your app real pages without ever leaving the browser tab.</p>
+  <div class="plain-box" style="max-width:700px;margin:20px auto 0">
+    <p class="plain-title">🧠 Before We Start</p>
+    <p style="font-size:13px;color:#fbbf24">Right now your React app is one page. React Router lets you make it feel like a website with multiple pages — but without the browser ever doing a full reload. Instagram, Twitter, and YouTube all work this way.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 4 — WHAT IS ROUTING -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">React Router</div><div class="slide-number">4 / 26</div>
+  <h2>What Is Routing? SPAs vs Traditional Sites</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Old websites: click a link → browser goes to the server → server sends a whole new HTML page → browser reloads. Like driving to a new location every time.
+        <br><br>
+        React (SPA): the browser downloads the whole app once. When you click a link, React swaps out the content instantly — no server trip, no reload. Like changing rooms inside a building instead of leaving and entering a new one.</p>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Traditional Website vs SPA</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:#1a0a0a;border:1px solid #ef4444;border-radius:6px;padding:8px">
+            <p style="font-size:11px;font-weight:700;color:#ef4444;margin:0">Traditional: click /about → full page reload</p>
+            <p style="font-size:10px;color:#a0aec0;margin:0">Browser → Server → New HTML → Flash → Reload ❌</p>
+          </div>
+          <div style="background:#0a1a12;border:1px solid #10b981;border-radius:6px;padding:8px">
+            <p style="font-size:11px;font-weight:700;color:#10b981;margin:0">SPA: click /about → instant swap</p>
+            <p style="font-size:10px;color:#a0aec0;margin:0">React swaps the component. No server trip. No flash. ✅</p>
+          </div>
+        </div>
+      </div>
+      <div class="info-box">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">Apps you use every day that use this:</p>
+        <p style="font-size:12px;color:#a0aec0">Gmail, Instagram, Twitter/X, YouTube, LinkedIn, Airbnb — all SPAs. The URL changes but there is no page reload.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 5 — INSTALLATION -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Setup</div><div class="slide-number">5 / 26</div>
+  <h2>Installing React Router — 2 Steps</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Step 1 — Install the package</p>
+      <pre><span class="cc"># In your terminal, inside your project folder:</span>
+npm install react-router-dom</pre>
+      <div class="warn-box" style="margin-top:6px;margin-bottom:10px">
+        <p style="font-size:12px;margin:0"><strong>Common mistake:</strong> typing <code>react-router</code> instead of <code>react-router-dom</code>. The <code>-dom</code> part is required for browser apps.</p>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Step 2 — Wrap your app in BrowserRouter</p>
+      <pre><span class="cc">// src/main.jsx — add BrowserRouter here</span>
+<span class="ck">import</span> { <span class="cmd">BrowserRouter</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+<span class="ck">import</span> <span class="cmd">App</span> <span class="ck">from</span> <span class="cs">'./App'</span>;
+
+<span class="cmd">ReactDOM</span>.<span class="cmd">createRoot</span>(document.<span class="cmd">getElementById</span>(<span class="cs">'root'</span>))
+  .<span class="cmd">render</span>(
+    <span class="ct">&lt;BrowserRouter&gt;</span>   <span class="cc">← wrap App here</span>
+      <span class="ct">&lt;App /&gt;</span>
+    <span class="ct">&lt;/BrowserRouter&gt;</span>
+  );</pre>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 Why Does BrowserRouter Go in main.jsx?</p>
+        <p style="font-size:13px;color:#fbbf24">Think of BrowserRouter as a power socket. Every component that needs routing must be plugged into it. By wrapping the entire app, every component anywhere in the tree can access routing. If you put it too deep, only part of the app gets routing.</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Checklist after install</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li><code>react-router-dom</code> appears in package.json</li>
+          <li><code>&lt;BrowserRouter&gt;</code> wraps <code>&lt;App /&gt;</code> in main.jsx</li>
+          <li>No errors in the console</li>
+          <li>App still loads normally</li>
+        </ul>
+      </div>
+      <div class="ai-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">🤖 <strong>If you get an error after installing:</strong> paste the error into Claude with "I just installed react-router-dom in my Vite React app. I'm getting this error: [error]"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 6 — ROUTES AND ROUTE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">React Router</div><div class="slide-number">6 / 26</div>
+  <h2>Routes &amp; Route — Your App's Menu of Pages</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24"><code>Routes</code> is like a menu at a restaurant. <code>Route</code> is each item on the menu. When the URL matches a route's <code>path</code>, React shows that route's <code>element</code>. Only the matching one. If nothing matches, you fall through to your 404 page.</p>
+  </div>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <pre style="font-size:9.5px"><span class="cc">// src/App.jsx — this is your route map</span>
+<span class="ck">import</span> { <span class="cmd">Routes</span>, <span class="cmd">Route</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+<span class="ck">import</span> <span class="cmd">HomePage</span>    <span class="ck">from</span> <span class="cs">'./pages/HomePage'</span>;
+<span class="ck">import</span> <span class="cmd">AboutPage</span>   <span class="ck">from</span> <span class="cs">'./pages/AboutPage'</span>;
+<span class="ck">import</span> <span class="cmd">ProductPage</span> <span class="ck">from</span> <span class="cs">'./pages/ProductPage'</span>;
+<span class="ck">import</span> <span class="cmd">NotFound</span>    <span class="ck">from</span> <span class="cs">'./pages/NotFound'</span>;
+<span class="ck">import</span> <span class="cmd">Navbar</span>      <span class="ck">from</span> <span class="cs">'./components/Navbar'</span>;
+
+<span class="ck">const</span> <span class="cmd">App</span> = () => (
+  <span class="ct">&lt;div&gt;</span>
+    <span class="ct">&lt;Navbar /&gt;</span>  <span class="cc">← shows on EVERY page</span>
+
+    <span class="ct">&lt;Routes&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/"</span>           <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">HomePage</span> <span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/about"</span>      <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">AboutPage</span> <span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/products/:id"</span> <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">ProductPage</span><span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+      <span class="cc">{/* :id is a variable — matches /products/1, /products/42 */}</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"*"</span>           <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">NotFound</span> <span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+      <span class="cc">{/* * matches EVERYTHING else — your 404 */}</span>
+    <span class="ct">&lt;/Routes&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+);
+<span class="ck">export default</span> <span class="cmd">App</span>;</pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">How Paths Map to URLs</p>
+        <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0">
+          <div><span class="route-pill">/</span>&nbsp;&nbsp; → your-app.com/</div>
+          <div><span class="route-pill">/about</span> → your-app.com/about</div>
+          <div><span class="route-pill">/products/:id</span> → your-app.com/products/42</div>
+          <div><span class="route-pill">*</span>&nbsp;&nbsp; → everything else → 404</div>
+        </div>
+      </div>
+      <div class="info-box">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">Folder Structure Best Practice</p>
+        <pre style="font-size:9px;margin:0;background:transparent;border:none;padding:0">src/
+├── pages/         ← full page components
+│   ├── HomePage.jsx
+│   ├── AboutPage.jsx
+│   └── ProductPage.jsx
+├── components/    ← reusable pieces
+│   ├── Navbar.jsx
+│   └── ProductCard.jsx
+└── App.jsx        ← the route map</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 7 — LINK AND NAVLINK -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">React Router</div><div class="slide-number">7 / 26</div>
+  <h2>Link &amp; NavLink — Never Use &lt;a&gt; Again</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">In normal HTML you use <code>&lt;a href="/about"&gt;</code> to link pages. The problem: it causes a full page reload, losing all your React state.
+        <br><br>
+        React Router's <code>&lt;Link&gt;</code> looks and works like <code>&lt;a&gt;</code> but uses JavaScript to switch pages instantly — no reload, no lost state.</p>
+      </div>
+      <div class="err-box" style="margin-bottom:6px">
+        <p class="col-lbl old-lbl">❌ Wrong — reloads the page</p>
+        <pre style="font-size:9.5px;margin:0"><span class="ct">&lt;a</span> <span class="ca">href</span><span class="cj">=</span><span class="cs">"/about"</span><span class="ct">&gt;</span>About<span class="ct">&lt;/a&gt;</span>
+<span class="cc">// This triggers a full browser reload</span>
+<span class="cc">// All your React state is gone! ❌</span></pre>
+      </div>
+      <div class="succ-box">
+        <p class="col-lbl new-lbl">✅ Right — instant navigation</p>
+        <pre style="font-size:9.5px;margin:0"><span class="ck">import</span> { <span class="cmd">Link</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+
+<span class="ct">&lt;Link</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/about"</span><span class="ct">&gt;</span>About<span class="ct">&lt;/Link&gt;</span>
+<span class="cc">// No reload. React swaps the page. ✅</span></pre>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">NavLink — Adds "active" class automatically</p>
+      <pre style="font-size:9.5px"><span class="ck">import</span> { <span class="cmd">NavLink</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+
+<span class="cc">// Use in your Navbar component:</span>
+<span class="ck">const</span> <span class="cmd">Navbar</span> = () => (
+  <span class="ct">&lt;nav&gt;</span>
+    <span class="ct">&lt;NavLink</span>
+      <span class="ca">to</span><span class="cj">=</span><span class="cs">"/"</span>
+      <span class="ca">style</span><span class="cj">={({</span> isActive <span class="cj">}) =></span> ({
+        color: isActive ? <span class="cs">'#6366f1'</span> : <span class="cs">'#a0aec0'</span>,
+        fontWeight: isActive ? <span class="cs">'700'</span> : <span class="cs">'400'</span>
+      })}
+    <span class="ct">&gt;</span>Home<span class="ct">&lt;/NavLink&gt;</span>
+
+    <span class="ct">&lt;NavLink</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/about"</span> <span class="cc">/* same style */</span><span class="ct">&gt;</span>About<span class="ct">&lt;/NavLink&gt;</span>
+    <span class="ct">&lt;NavLink</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/products"</span><span class="ct">&gt;</span>Products<span class="ct">&lt;/NavLink&gt;</span>
+  <span class="ct">&lt;/nav&gt;</span>
+);</pre>
+      <div class="info-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0"><strong>NavLink</strong> knows which page you're on. Use it for navbars where the active link should look different. <strong>Link</strong> is for any other navigation (buttons, cards, etc.)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 8 — USEPARAMS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">React Router</div><div class="slide-number">8 / 26</div>
+  <h2>useParams — Dynamic Pages Like /products/42</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Twitter has millions of users but ONE user profile page component. The URL changes — <code>/user/tolu</code>, <code>/user/emeka</code> — and the same component uses the name from the URL to show different data.
+        <br><br>
+        <code>useParams()</code> reads that variable part from the URL and gives it to your component.</p>
+      </div>
+      <pre style="font-size:9.5px"><span class="cc">// App.jsx — the :id is the "variable slot"</span>
+<span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/users/:id"</span> <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">UserPage</span><span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+
+<span class="cc">// UserPage.jsx — reads the :id from the URL</span>
+<span class="ck">import</span> { <span class="cmd">useParams</span>, <span class="cmd">useNavigate</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+<span class="ck">import</span> { <span class="cmd">useState</span>, <span class="cmd">useEffect</span> } <span class="ck">from</span> <span class="cs">'react'</span>;
+
+<span class="ck">const</span> <span class="cmd">UserPage</span> = () => {
+  <span class="ck">const</span> { id } = <span class="cmd">useParams</span>();
+  <span class="cc">// id = "tolu" if URL is /users/tolu</span>
+  <span class="cc">// id = "42"   if URL is /users/42</span>
+
+  <span class="ck">const</span> [user, setUser]     = <span class="cmd">useState</span>(<span class="cp">null</span>);
+  <span class="ck">const</span> [loading, setLoading] = <span class="cmd">useState</span>(<span class="cp">true</span>);
+
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cc">// Fetch data for THIS specific user</span>
+    <span class="cmd">fetch</span>(<span class="cs">`https://randomuser.me/api/?seed=<span class="cj">${</span>id<span class="cj">}</span>`</span>)
+      .<span class="cmd">then</span>(r => r.<span class="cmd">json</span>())
+      .<span class="cmd">then</span>(d => { <span class="cmd">setUser</span>(d.results[<span class="cp">0</span>]); <span class="cmd">setLoading</span>(<span class="cp">false</span>); });
+  }, [id]); <span class="cc">// re-run when :id changes</span>
+
+  <span class="ck">if</span> (loading) <span class="ck">return</span> <span class="ct">&lt;p&gt;</span>Loading...<span class="ct">&lt;/p&gt;</span>;
+  <span class="ck">return</span> <span class="ct">&lt;h2&gt;</span><span class="cj">{</span>user?.name.first<span class="cj">}</span><span class="ct">&lt;/h2&gt;</span>;
+};</pre>
+    </div>
+    <div>
+      <div class="pat-box" style="margin-bottom:8px">
+        <p class="pat-title">The useParams Pattern</p>
+        <ol style="font-size:12px;margin-left:16px;line-height:1.85;color:#cbd5e0">
+          <li>Define <code>:param</code> in the Route path</li>
+          <li>Call <code>useParams()</code> in the page component</li>
+          <li>Destructure the param: <code>const { id } = useParams()</code></li>
+          <li>Use it in a fetch URL or to filter your data</li>
+          <li>Put <code>[id]</code> in useEffect's dependency array</li>
+        </ol>
+      </div>
+      <div class="info-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">Real uses of dynamic routes</p>
+        <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2;color:#cbd5e0">
+          <div><span class="route-pill">/products/:id</span></div>
+          <div><span class="route-pill">/movies/:movieId</span></div>
+          <div><span class="route-pill">/users/:username</span></div>
+          <div><span class="route-pill">/countries/:code</span></div>
+        </div>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 <strong>AI Prompt:</strong> "Explain useParams in React Router using a simple analogy. Then show me a complete example of a dynamic product page that fetches data based on the :id in the URL."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 9 — USENAVIGATE & 404 -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">React Router</div><div class="slide-number">9 / 26</div>
+  <h2>useNavigate &amp; 404 Pages</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">useNavigate — Go to a page from code</p>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:12px;color:#fbbf24"><code>Link</code> works for clicking. <code>useNavigate</code> is for going somewhere after something happens — like after a form submits successfully, or after an item is deleted. "Take the user to the home page after they log out."</p>
+      </div>
+      <pre style="font-size:9.5px"><span class="ck">import</span> { <span class="cmd">useNavigate</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+
+<span class="ck">const</span> <span class="cmd">LoginPage</span> = () => {
+  <span class="ck">const</span> navigate = <span class="cmd">useNavigate</span>();
+
+  <span class="ck">const</span> <span class="cmd">handleLogin</span> = () => {
+    <span class="cc">// ... check credentials ...</span>
+    navigate(<span class="cs">'/dashboard'</span>); <span class="cc">// go here after success</span>
+  };
+
+  <span class="cc">// Go back to the previous page:</span>
+  <span class="ck">const</span> <span class="cmd">goBack</span> = () => navigate(<span class="cp">-1</span>);
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={</span>goBack<span class="cj">}</span><span class="ct">&gt;</span>← Back<span class="ct">&lt;/button&gt;</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={</span>handleLogin<span class="cj">}</span><span class="ct">&gt;</span>Login<span class="ct">&lt;/button&gt;</span>
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">404 Page — The Catch-All</p>
+      <pre style="font-size:9.5px"><span class="cc">// pages/NotFound.jsx</span>
+<span class="ck">import</span> { <span class="cmd">Link</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+
+<span class="ck">const</span> <span class="cmd">NotFound</span> = () => (
+  <span class="ct">&lt;div</span> <span class="ca">style</span><span class="cj">={{</span>textAlign: <span class="cs">'center'</span>, padding: <span class="cs">'50px'</span><span class="cj">}}</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h1&gt;</span>404<span class="ct">&lt;/h1&gt;</span>
+    <span class="ct">&lt;p&gt;</span>This page doesn't exist.<span class="ct">&lt;/p&gt;</span>
+    <span class="ct">&lt;Link</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/"</span><span class="ct">&gt;</span>← Back to Home<span class="ct">&lt;/Link&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+);
+<span class="ck">export default</span> <span class="cmd">NotFound</span>;</pre>
+      <pre style="font-size:9.5px;margin-top:6px"><span class="cc">// In App.jsx — the * path catches everything</span>
+<span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"*"</span> <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">NotFound</span><span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+<span class="cc">// Must be the LAST route</span></pre>
+      <div class="succ-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0"><strong>navigate(-1)</strong> is like the browser's back button. It goes to wherever the user was before. Perfect for "Back" buttons on detail pages.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 10 — FULL ROUTER EXAMPLE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Live Coding</div><div class="slide-number">10 / 26</div>
+  <h2>Full Example — Country Explorer App</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre style="font-size:9px"><span class="cc">// App.jsx — 3-page country explorer</span>
+<span class="ck">import</span> { <span class="cmd">Routes</span>, <span class="cmd">Route</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+<span class="ck">import</span> <span class="cmd">Navbar</span>       <span class="ck">from</span> <span class="cs">'./components/Navbar'</span>;
+<span class="ck">import</span> <span class="cmd">HomePage</span>    <span class="ck">from</span> <span class="cs">'./pages/HomePage'</span>;
+<span class="ck">import</span> <span class="cmd">CountryPage</span> <span class="ck">from</span> <span class="cs">'./pages/CountryPage'</span>;
+<span class="ck">import</span> <span class="cmd">NotFound</span>    <span class="ck">from</span> <span class="cs">'./pages/NotFound'</span>;
+
+<span class="ck">const</span> <span class="cmd">App</span> = () => (
+  <span class="ct">&lt;div&gt;</span>
+    <span class="ct">&lt;Navbar /&gt;</span>
+    <span class="ct">&lt;Routes&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/"</span>             <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">HomePage</span><span class="cj">/&gt;}</span>    <span class="ct">/&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/country/:name"</span> <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">CountryPage</span><span class="cj">/&gt;}</span> <span class="ct">/&gt;</span>
+      <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"*"</span>             <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">NotFound</span><span class="cj">/&gt;}</span>    <span class="ct">/&gt;</span>
+    <span class="ct">&lt;/Routes&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+);
+
+<span class="cc">// HomePage.jsx — list of countries as links</span>
+<span class="ck">const</span> <span class="cmd">HomePage</span> = () => {
+  <span class="ck">const</span> [countries, setCountries] = <span class="cmd">useState</span>([]);
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cmd">fetch</span>(<span class="cs">'https://restcountries.com/v3.1/region/africa?fields=name,flags'</span>)
+      .<span class="cmd">then</span>(r => r.<span class="cmd">json</span>()).<span class="cmd">then</span>(<span class="cmd">setCountries</span>);
+  }, []);
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      {countries.<span class="cmd">map</span>(c => (
+        <span class="ct">&lt;Link</span> <span class="ca">key</span><span class="cj">={</span>c.name.common<span class="cj">}</span>
+              <span class="ca">to</span><span class="cj">={`</span>/country/<span class="cj">${</span>c.name.common<span class="cj">}`}</span><span class="ct">&gt;</span>
+          <span class="cj">{</span>c.name.common<span class="cj">}</span>
+        <span class="ct">&lt;/Link&gt;</span>
+      ))}
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <pre style="font-size:9px"><span class="cc">// CountryPage.jsx — detail page</span>
+<span class="ck">import</span> { <span class="cmd">useParams</span>, <span class="cmd">useNavigate</span> } <span class="ck">from</span> <span class="cs">'react-router-dom'</span>;
+
+<span class="ck">const</span> <span class="cmd">CountryPage</span> = () => {
+  <span class="ck">const</span> { name }  = <span class="cmd">useParams</span>();
+  <span class="ck">const</span> navigate   = <span class="cmd">useNavigate</span>();
+  <span class="ck">const</span> [country, setCountry] = <span class="cmd">useState</span>(<span class="cp">null</span>);
+
+  <span class="cmd">useEffect</span>(() => {
+    <span class="cmd">fetch</span>(<span class="cs">`https://restcountries.com/v3.1/name/<span class="cj">${</span>name<span class="cj">}</span>`</span>)
+      .<span class="cmd">then</span>(r => r.<span class="cmd">json</span>())
+      .<span class="cmd">then</span>(data => <span class="cmd">setCountry</span>(data[<span class="cp">0</span>]));
+  }, [name]);
+
+  <span class="ck">if</span> (!country) <span class="ck">return</span> <span class="ct">&lt;p&gt;</span>Loading...<span class="ct">&lt;/p&gt;</span>;
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;div&gt;</span>
+      <span class="ct">&lt;button</span> <span class="ca">onClick</span><span class="cj">={() =></span> navigate(<span class="cp">-1</span>)<span class="cj">}</span><span class="ct">&gt;</span>← Back<span class="ct">&lt;/button&gt;</span>
+      <span class="ct">&lt;img</span> <span class="ca">src</span><span class="cj">={</span>country.flags.svg<span class="cj">}</span> <span class="ca">width</span><span class="cj">=</span><span class="cs">"120"</span> <span class="ct">/&gt;</span>
+      <span class="ct">&lt;h1&gt;</span><span class="cj">{</span>country.name.common<span class="cj">}</span><span class="ct">&lt;/h1&gt;</span>
+      <span class="ct">&lt;p&gt;</span>Capital: <span class="cj">{</span>country.capital?.[<span class="cp">0</span>]<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+      <span class="ct">&lt;p&gt;</span>Pop: <span class="cj">{</span>country.population.<span class="cmd">toLocaleString</span>()<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+    <span class="ct">&lt;/div&gt;</span>
+  );
+};</pre>
+      <div class="succ-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0"><strong>What we just built:</strong> A list page → click → detail page → back button. This exact pattern is how every e-commerce, movie, and news app works.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 11 — ROUTER QUICK REFERENCE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Quick Reference</div><div class="slide-number">11 / 26</div>
+  <h2>React Router — Everything on One Slide</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="pat-box">
+      <p class="pat-title">Setup (main.jsx)</p>
+      <pre style="font-size:9px;margin:0"><span class="ck">import</span> { <span class="cmd">BrowserRouter</span> } <span class="ck">from</span>
+  <span class="cs">'react-router-dom'</span>;
+
+<span class="ct">&lt;BrowserRouter&gt;</span>
+  <span class="ct">&lt;App /&gt;</span>
+<span class="ct">&lt;/BrowserRouter&gt;</span></pre>
+    </div>
+    <div class="pat-box">
+      <p class="pat-title">Route Map (App.jsx)</p>
+      <pre style="font-size:9px;margin:0"><span class="ck">import</span> { <span class="cmd">Routes</span>, <span class="cmd">Route</span> } <span class="ck">from</span>
+  <span class="cs">'react-router-dom'</span>;
+
+<span class="ct">&lt;Routes&gt;</span>
+  <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/"</span>       <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">Home</span><span class="cj">/&gt;}</span><span class="ct">/&gt;</span>
+  <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"/item/:id"</span> <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">Item</span><span class="cj">/&gt;}</span><span class="ct">/&gt;</span>
+  <span class="ct">&lt;Route</span> <span class="ca">path</span><span class="cj">=</span><span class="cs">"*"</span>       <span class="ca">element</span><span class="cj">={&lt;</span><span class="cmd">NotFound</span><span class="cj">/&gt;}</span><span class="ct">/&gt;</span>
+<span class="ct">&lt;/Routes&gt;</span></pre>
+    </div>
+    <div class="pat-box">
+      <p class="pat-title">Navigation</p>
+      <pre style="font-size:9px;margin:0"><span class="cc">// In JSX:</span>
+<span class="ct">&lt;Link</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/about"</span><span class="ct">&gt;</span>About<span class="ct">&lt;/Link&gt;</span>
+<span class="ct">&lt;NavLink</span> <span class="ca">to</span><span class="cj">=</span><span class="cs">"/"</span><span class="ct">&gt;</span>Home<span class="ct">&lt;/NavLink&gt;</span>
+
+<span class="cc">// In code:</span>
+<span class="ck">const</span> navigate = <span class="cmd">useNavigate</span>();
+<span class="cmd">navigate</span>(<span class="cs">'/dashboard'</span>);
+<span class="cmd">navigate</span>(<span class="cp">-1</span>); <span class="cc">// ← go back</span></pre>
+    </div>
+  </div>
+  <div class="pat-box" style="margin-top:10px">
+    <p class="pat-title">Reading URL Parameters</p>
+    <pre style="font-size:10px;margin:0"><span class="cc">// Route is defined as: path="/products/:id"</span>
+<span class="ck">const</span> { id } = <span class="cmd">useParams</span>();       <span class="cc">// reads :id from URL</span>
+<span class="cc">// URL is /products/42 → id === "42"</span>
+<span class="cc">// URL is /products/jollof → id === "jollof"</span></pre>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <div class="err-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>Never use:</strong> <code>&lt;a href&gt;</code> inside React Router — it reloads the page</p>
+    </div>
+    <div class="err-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>Always:</strong> <code>path="*"</code> must be the LAST Route in the list</p>
+    </div>
+    <div class="succ-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>Best practice:</strong> Pages go in <code>src/pages/</code>, shared components in <code>src/components/</code></p>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 12 — PART 2 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">12 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:3px;text-transform:uppercase">Part 2 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">🏗️</p>
+  <h1 style="font-size:48px">Code Quality &amp; Planning</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Before you build big — learn to build clean.</p>
+  <div class="info-box" style="max-width:660px;margin:20px auto 0">
+    <p style="font-size:14px;color:#6366f1;font-weight:600">Your mini project is the most complex thing you'll build on this course. The difference between a project that's easy to fix and one that's a mess is how you structure it before writing a single line of code.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 13 — COMPONENT STRUCTURE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Best Practices</div><div class="slide-number">13 / 26</div>
+  <h2>Component Structure — The Rules That Save You</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">A good component is like a good function: it does ONE thing, does it well, and doesn't care about things outside its job. When you open a component file, you should immediately know what it does from its name alone.</p>
+      </div>
+      <div class="succ-box" style="margin-bottom:6px">
+        <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Signs of a well-structured component</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>File name = component name (<code>MovieCard.jsx</code>)</li>
+          <li>Does one job (shows a movie card)</li>
+          <li>Under ~100 lines. If longer, split it</li>
+          <li>Receives data via props, doesn't fetch its own</li>
+          <li>Could be reused in multiple places</li>
+        </ul>
+      </div>
+      <div class="err-box">
+        <p style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:4px">❌ Warning signs to fix</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Component doing fetch + render + user interaction</li>
+          <li>One JSX file that's 300+ lines</li>
+          <li>Copying the same JSX block in multiple files</li>
+          <li>Passing props down 3+ levels (prop drilling)</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Recommended Folder Structure</p>
+        <pre style="font-size:9.5px;margin:0;background:transparent;border:none;padding:0">src/
+├── pages/           ← full-page components
+│   ├── HomePage.jsx
+│   ├── MoviePage.jsx
+│   └── NotFound.jsx
+│
+├── components/      ← reusable smaller pieces
+│   ├── Navbar.jsx
+│   ├── MovieCard.jsx
+│   ├── SearchBar.jsx
+│   └── LoadingSpinner.jsx
+│
+├── hooks/           ← custom hooks (advanced)
+│   └── useMovies.js
+│
+├── App.jsx          ← route definitions only
+└── main.jsx         ← BrowserRouter lives here</pre>
+      </div>
+      <div class="ai-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">🤖 <strong>AI Prompt for your mini project:</strong> "I'm building a Movie Database React app with Vite. Help me plan the folder structure and component tree. I need a home page with movie cards, a search bar, and individual movie detail pages with React Router."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 14 — STATE STRATEGY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Best Practices</div><div class="slide-number">14 / 26</div>
+  <h2>State Strategy — Where Should State Live?</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 The Golden Rule of State</p>
+    <p style="font-size:13px;color:#fbbf24">State should live in the lowest component that needs it — but high enough so all components that need it can reach it. If only MovieCard needs its own hover state — keep it there. If the search query is needed by three different components — lift it up to their shared parent.</p>
+  </div>
+  <div class="three-col" style="align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Local State — keep it here</p>
+      <div style="background:#0f1729;border:1px solid #10b981;border-radius:8px;padding:10px">
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Hover / focus effects</li>
+          <li>Open/close of a modal</li>
+          <li>Show/hide a section</li>
+          <li>Input value (typed text)</li>
+        </ul>
+        <p style="font-size:10px;color:#10b981;margin-top:6px;margin-bottom:0">Only used in that one component</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Lifted State — parent holds it</p>
+      <div style="background:#0f1729;border:1px solid #6366f1;border-radius:8px;padding:10px">
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Search query (affects results)</li>
+          <li>Active filter (affects the list)</li>
+          <li>Fetched movies list</li>
+          <li>Selected item</li>
+        </ul>
+        <p style="font-size:10px;color:#6366f1;margin-top:6px;margin-bottom:0">Multiple children need the same data</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">What NOT to put in state</p>
+      <div style="background:#0f1729;border:1px solid #fbbf24;border-radius:8px;padding:10px">
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Values you can calculate from state</li>
+          <li>Duplicate data (store once)</li>
+          <li>Data that never changes</li>
+        </ul>
+        <pre style="font-size:9px;margin-top:6px"><span class="cc">// Don't store computed values:</span>
+<span class="cc">// const [count, setCount] = useState(0);</span>
+<span class="cc">// const [doubled, setDoubled] = ... ← NO</span>
+<span class="cc">// const doubled = count * 2; ← YES</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 15 — PART 3 DIVIDER: MINI PROJECT -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">15 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#f97316;letter-spacing:3px;text-transform:uppercase">Part 3 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">🚀</p>
+  <h1 style="font-size:46px">Mini Project Kickoff</h1>
+  <p style="font-size:20px;color:#a0aec0;margin-top:10px">The biggest project of this course. Your choice. Your pace.</p>
+  <div style="margin-top:24px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+    <div style="background:#0f1729;border:2px solid #f97316;border-radius:10px;padding:14px 20px;text-align:center">
+      <p style="font-size:22px;margin-bottom:4px">🎬</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin:0">Option 1</p>
+      <p style="font-size:12px;color:#a0aec0;margin:0">Movie Database</p>
+    </div>
+    <div style="background:#0f1729;border:2px solid #10b981;border-radius:10px;padding:14px 20px;text-align:center">
+      <p style="font-size:22px;margin-bottom:4px">🍽️</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin:0">Option 2</p>
+      <p style="font-size:12px;color:#a0aec0;margin:0">Recipe Finder</p>
+    </div>
+    <div style="background:#0f1729;border:2px solid #6366f1;border-radius:10px;padding:14px 20px;text-align:center">
+      <p style="font-size:22px;margin-bottom:4px">🌍</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin:0">Option 3</p>
+      <p style="font-size:12px;color:#a0aec0;margin:0">Country Explorer</p>
+      <p style="font-size:10px;color:#6366f1;margin:2px 0 0">No API key needed</p>
+    </div>
+  </div>
+  <div class="warn-box" style="max-width:650px;margin:20px auto 0">
+    <p style="font-size:13px;margin:0">This project uses <strong>everything</strong> you've learned: components, props, useState, useEffect, fetch, .map(), conditional rendering, and now React Router. It's your proof of concept.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 16 — PROJECT OPTION 1 -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="proj-tag">Option 1</div><div class="slide-number">16 / 26</div>
+  <h2>🎬 Option 1: Movie Database App</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div style="background:#0f1729;border:1px solid #f97316;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Core Requirements</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+          <li>Browse popular movies on the home page</li>
+          <li>Search for movies by title</li>
+          <li>Movie cards: poster, title, rating</li>
+          <li>Click a card → <strong>movie detail page</strong> (<code>/movie/:id</code>)</li>
+          <li>Detail page: plot, cast, release date</li>
+          <li>React Router for all navigation</li>
+          <li>Loading &amp; error states on every fetch</li>
+          <li>Responsive design</li>
+        </ul>
+      </div>
+      <div style="background:#0f1729;border:1px solid #fbbf24;border-radius:8px;padding:10px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Bonus Features</p>
+        <ul style="font-size:11.5px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Watchlist (save to localStorage)</li>
+          <li>Filter by genre or year</li>
+          <li>Infinite scroll or pagination</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">API Setup</p>
+        <p style="font-size:12px;color:#cbd5e0;margin-bottom:6px"><strong>TMDb API</strong> — free, requires a free key</p>
+        <ol style="font-size:12px;margin-left:16px;line-height:1.75;color:#a0aec0">
+          <li>Go to <strong style="color:#06b6d4">themoviedb.org</strong></li>
+          <li>Sign up → Settings → API → Get key</li>
+          <li>Takes about 2 minutes, instant approval</li>
+        </ol>
+        <pre style="font-size:9px;margin-top:8px"><span class="cc">// Popular movies endpoint:</span>
+https://api.themoviedb.org/3/movie/popular
+  ?api_key=YOUR_KEY
+
+<span class="cc">// Search endpoint:</span>
+https://api.themoviedb.org/3/search/movie
+  ?api_key=YOUR_KEY&amp;query=Wakanda
+
+<span class="cc">// Movie detail:</span>
+https://api.themoviedb.org/3/movie/550
+  ?api_key=YOUR_KEY</pre>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 <strong>Start here:</strong> "I'm building a Movie Database app with React, Vite, and React Router. Help me plan the component tree and write the basic App.jsx route setup."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 17 — PROJECT OPTION 2 -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="proj-tag">Option 2</div><div class="slide-number">17 / 26</div>
+  <h2>🍽️ Option 2: Recipe Finder App</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div style="background:#0f1729;border:1px solid #10b981;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Core Requirements</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+          <li>Search recipes by name or ingredient</li>
+          <li>Recipe cards: image, title, cooking time</li>
+          <li>Click a card → <strong>recipe detail page</strong> (<code>/recipe/:id</code>)</li>
+          <li>Detail page: full ingredients list, instructions, nutrition</li>
+          <li>Filter by diet (vegetarian, vegan, gluten-free)</li>
+          <li>React Router for all navigation</li>
+          <li>Loading &amp; error states on every fetch</li>
+        </ul>
+      </div>
+      <div style="background:#0f1729;border:1px solid #fbbf24;border-radius:8px;padding:10px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Bonus Features</p>
+        <ul style="font-size:11.5px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Save favourites to localStorage</li>
+          <li>Shopping list generator from ingredients</li>
+          <li>Random recipe button</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">API Setup</p>
+        <p style="font-size:12px;color:#cbd5e0;margin-bottom:4px"><strong>TheMealDB</strong> — 100% free, NO key required</p>
+        <pre style="font-size:9px;margin-top:6px"><span class="cc">// Search by name:</span>
+https://www.themealdb.com/api/json/v1/1/search.php?s=chicken
+
+<span class="cc">// Random meal:</span>
+https://www.themealdb.com/api/json/v1/1/random.php
+
+<span class="cc">// Meal by ID (for detail page):</span>
+https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772
+
+<span class="cc">// Filter by category:</span>
+https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood</pre>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Recommended for beginners</p>
+        <p style="font-size:12px;color:#a0aec0">TheMealDB has no key, great documentation, and a wide variety of meals including African cuisine. A good choice if you want to get started without API key setup.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 18 — PROJECT OPTION 3 -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="proj-tag">Option 3 · No API Key</div><div class="slide-number">18 / 26</div>
+  <h2>🌍 Option 3: Country Explorer App — No Key Needed</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div style="background:#0f1729;border:1px solid #6366f1;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Core Requirements</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+          <li>Home page: grid of all African countries</li>
+          <li>Country cards: flag, name, capital, population</li>
+          <li>Search/filter by country name</li>
+          <li>Click → <strong>country detail page</strong> (<code>/country/:name</code>)</li>
+          <li>Detail page: languages, currency, area, region</li>
+          <li>Filter by sub-region (West Africa, East Africa, etc.)</li>
+          <li>React Router navigation throughout</li>
+        </ul>
+      </div>
+      <div style="background:#0f1729;border:1px solid #fbbf24;border-radius:8px;padding:10px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Bonus Features</p>
+        <ul style="font-size:11.5px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Show bordering countries on detail page</li>
+          <li>Sort by population or name</li>
+          <li>Light/dark mode toggle</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">API — Completely Free, No Key</p>
+        <pre style="font-size:9px"><span class="cc">// All countries (includes flags, capital, etc):</span>
+https://restcountries.com/v3.1/all
+
+<span class="cc">// Only African countries:</span>
+https://restcountries.com/v3.1/region/africa
+
+<span class="cc">// Specific country by name:</span>
+https://restcountries.com/v3.1/name/Nigeria
+
+<span class="cc">// Specific fields only (faster response):</span>
+https://restcountries.com/v3.1/region/africa
+  ?fields=name,flags,capital,population,subregion</pre>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;margin:0"><strong>Why Option 3?</strong> Zero setup friction. Nigerian-relevant data. Open the API URL in your browser right now and see the full JSON. Start building in 60 seconds.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 19 — PLANNING WITH AI -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">AI Planning</div><div class="slide-number">19 / 26</div>
+  <h2>🤖 Planning Your Project with AI</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:10px">Before writing a single line of code, use AI to map the project. This 10-minute investment saves hours of confusion later.</p>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Step 1 — Ask AI to plan your component tree</p>
+      <div class="prompt-block" style="margin-bottom:10px">
+        <div class="prompt-label">Paste this into Claude or ChatGPT:</div>
+        <span style="color:#06b6d4">"I'm building a Movie Database React app using Vite and React Router. It should have: a home page with popular movies, a search bar, a detail page for individual movies, and a 404 page. The API is TMDb. Help me: 1) Plan the full component tree 2) Decide where state should live 3) Write the skeleton App.jsx with all routes set up."</span>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Step 2 — Ask AI to scaffold each page</p>
+      <div class="prompt-block">
+        <div class="prompt-label">Then for each component:</div>
+        <span style="color:#06b6d4">"Write the skeleton for a MovieCard component. It receives: title, poster_path, vote_average, id as props. It should show the movie poster, title, star rating. When clicked it navigates to /movie/:id using React Router's Link. No styling yet — just the structure."</span>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 Why plan before coding?</p>
+        <p style="font-size:13px;color:#fbbf24">Imagine building a house without a blueprint. You start with the kitchen, realize you put it in the wrong place, tear it down and start again. That's what happens when you jump into code without a plan. 10 minutes of planning saves 2 hours of refactoring.</p>
+      </div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:4px">✅ What a good plan looks like</p>
+        <pre style="font-size:9px;margin:0;background:transparent;border:none;padding:0">App.jsx (routes only)
+├── Navbar (always visible)
+├── / → HomePage
+│   ├── SearchBar
+│   └── MovieGrid → MovieCard[]
+├── /movie/:id → MoviePage
+│   ├── Back button
+│   └── MovieDetails
+└── * → NotFound</pre>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 After AI gives you the plan — <strong>read it carefully before accepting it</strong>. Does it make sense? Do you understand every component? Ask AI to explain anything that's unclear before you start building.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 20 — LIVE SCAFFOLD WITH AI -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Live Build</div><div class="slide-number">20 / 26</div>
+  <h2>Live Build — Scaffolding the Mini Project Together</h2>
+  <span class="ai-badge">Class Activity</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">We Do This Together (30 mins)</p>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">1</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Pick your project option. Open the API URL in your browser — understand the JSON structure before touching code.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">2</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Open a new Vite project: <code>npm create vite@latest my-project -- --template react</code> then <code>npm install react-router-dom</code></p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0a1628;border:1px solid #06b6d4;border-radius:6px;padding:8px 10px">
+          <span class="step-chip" style="border-color:#06b6d4;color:#06b6d4;background:rgba(6,182,212,.2)">3</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Ask AI to generate your <code>App.jsx</code> route skeleton. Read it, understand it, then paste it in.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">4</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Create all your page files with placeholder content: <code>const HomePage = () =&gt; &lt;h1&gt;Home&lt;/h1&gt;</code>. Get all routes working with placeholder pages first.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">5</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Add the Navbar with NavLinks. Test that clicking between pages works before touching data.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0a1a12;border:1px solid #10b981;border-radius:6px;padding:8px 10px">
+          <span class="step-chip" style="border-color:#10b981;color:#10b981;background:rgba(16,185,129,.2)">6</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Add one fetch to the home page. Get data showing. Everything else builds from here.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 The Key Principle: Get it Working Ugly First</p>
+        <p style="font-size:13px;color:#fbbf24">Don't style anything until the data flows. Get the ugly version working — console.log shows the data, the routes navigate, the list renders. Then make it look good. Styling a broken app is wasted effort.</p>
+      </div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:4px">✅ End of class goal</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Vite project created and running</li>
+          <li>React Router installed</li>
+          <li>All route skeletons in App.jsx</li>
+          <li>Navbar navigating between pages</li>
+          <li>Home page fetching and showing data</li>
+        </ul>
+      </div>
+      <div class="warn-box">
+        <p style="font-size:12px;margin:0"><strong>If your API needs a key:</strong> get it before class ends or switch to Option 3 (Country Explorer) which has zero setup. Don't spend an hour debugging API keys instead of building.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 21 — AI WORKFLOW FOR THE PROJECT -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">AI Workflow</div><div class="slide-number">21 / 26</div>
+  <h2>🤖 Your AI Workflow for the Mini Project</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:10px">This is a bigger project than anything you've built. Use AI smarter — not to write everything, but to unblock yourself when you get stuck.</p>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">The Right AI Prompts for This Project</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="prompt-block" style="margin:0">
+            <div class="prompt-label">When planning:</div>
+            <span style="color:#06b6d4;font-size:9.5px">"I'm building [project]. Help me plan the component tree and decide where state should live."</span>
+          </div>
+          <div class="prompt-block" style="margin:0">
+            <div class="prompt-label">When stuck on router:</div>
+            <span style="color:#06b6d4;font-size:9.5px">"My dynamic route /movie/:id works on click but the page is blank. Here's my code: [paste]. What's wrong?"</span>
+          </div>
+          <div class="prompt-block" style="margin:0">
+            <div class="prompt-label">When understanding the API:</div>
+            <span style="color:#06b6d4;font-size:9.5px">"Here's the JSON response from TMDb: [paste]. What fields should I use for a movie card that shows poster, title, and rating?"</span>
+          </div>
+          <div class="prompt-block" style="margin:0">
+            <div class="prompt-label">When code reviewing:</div>
+            <span style="color:#06b6d4;font-size:9.5px">"Review my MoviePage component. Is there anything wrong? Anything I could do better? [paste]"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 How Professionals Actually Use AI on Projects</p>
+        <p style="font-size:13px;color:#fbbf24">They don't ask AI to "build the app". They use AI as a fast-turnaround colleague. Stuck for 20 minutes? Ask AI. Got a confusing error? Ask AI. Not sure about a decision? Ask AI. But they write and understand every line that ends up in their codebase.</p>
+      </div>
+      <div class="warn-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:4px">⚠️ The Mini Project Trap</p>
+        <p style="font-size:12px;color:#a0aec0">Some students will ask AI to write the whole app, paste it in, and submit. The code might work — but they won't understand it. In the capstone project and job interviews, they will be exposed. Don't do this to yourself.</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;margin:0"><strong>The test:</strong> Can you explain every component in your project to a classmate? If yes — great work. If no — go back and understand it before submitting.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 22 — COMMON ROUTER BUGS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Troubleshooting</div><div class="slide-number">22 / 26</div>
+  <h2>Common React Router Bugs &amp; Fixes</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="err-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">Bug: "useParams must be used within a Router"</p>
+        <p style="font-size:12px;color:#a0aec0">Cause: BrowserRouter is missing or in the wrong place.</p>
+        <p style="font-size:12px;color:#10b981">Fix: Go to <code>main.jsx</code>. Wrap <code>&lt;App /&gt;</code> with <code>&lt;BrowserRouter&gt;</code>.</p>
+      </div>
+      <div class="err-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">Bug: Clicking a link reloads the whole page</p>
+        <p style="font-size:12px;color:#a0aec0">Cause: You're using <code>&lt;a href&gt;</code> instead of <code>&lt;Link to&gt;</code>.</p>
+        <p style="font-size:12px;color:#10b981">Fix: Replace every <code>&lt;a href="..."&gt;</code> with <code>&lt;Link to="..."&gt;</code> and import Link from 'react-router-dom'.</p>
+      </div>
+      <div class="err-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">Bug: Detail page shows the right URL but is blank</p>
+        <p style="font-size:12px;color:#a0aec0">Cause: The Route path doesn't match the Link's <code>to</code> value, OR useParams name doesn't match the <code>:param</code> in path.</p>
+        <p style="font-size:12px;color:#10b981">Fix: Make sure <code>path="/movie/:id"</code> and <code>to={`/movie/${movie.id}`}</code> and <code>const {'{id}'} = useParams()</code> all use the same name.</p>
+      </div>
+    </div>
+    <div>
+      <div class="err-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">Bug: "Cannot read properties of undefined (reading 'name')"</p>
+        <p style="font-size:12px;color:#a0aec0">Cause: The API data hasn't loaded yet, but you're already trying to access fields on it.</p>
+        <p style="font-size:12px;color:#10b981">Fix: Add early returns. <code>if (!movie) return &lt;p&gt;Loading...&lt;/p&gt;</code> before accessing <code>movie.name</code>.</p>
+      </div>
+      <div class="err-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:4px">Bug: 404 page shows up even on valid routes</p>
+        <p style="font-size:12px;color:#a0aec0">Cause: The <code>path="*"</code> route is listed before your real routes.</p>
+        <p style="font-size:12px;color:#10b981">Fix: Always put <code>path="*"</code> as the very LAST Route inside <code>&lt;Routes&gt;</code>.</p>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 <strong>For any bug:</strong> Paste the full error message + your App.jsx and the relevant component into Claude. Say what page you're on and what you expected to happen.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 23 — CODE REVIEW BASICS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Code Review</div><div class="slide-number">23 / 26</div>
+  <h2>Mini Code Review — Pair Up &amp; Check Each Other</h2>
+  <span class="live-badge">Class Activity</span>
+  <p style="color:#a0aec0;margin-bottom:10px">Real developers review each other's code before it ships. Same format: share your screen, walk through your component, let your partner ask questions.</p>
+  <div class="three-col" style="margin-top:8px">
+    <div style="background:#0f1729;border:1px solid #10b981;border-radius:8px;padding:12px">
+      <p style="font-size:11px;font-weight:700;color:#10b981;text-transform:uppercase;margin-bottom:6px">Reviewer Asks</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>What does this component do?</li>
+        <li>Where does the data come from?</li>
+        <li>What happens if the API fails?</li>
+        <li>Could this be split into smaller pieces?</li>
+        <li>Is any JSX being duplicated?</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #6366f1;border-radius:8px;padding:12px">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;margin-bottom:6px">Look For</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>State mutation (push, splice, =)</li>
+        <li>Missing key props in .map()</li>
+        <li>Missing loading or error state</li>
+        <li>useEffect without dependency array</li>
+        <li>&lt;a href&gt; instead of &lt;Link&gt;</li>
+      </ul>
+    </div>
+    <div class="ai-box" style="border-radius:8px">
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;margin-bottom:6px">🤖 AI Code Review</p>
+      <p style="font-size:12px;color:#a0aec0;margin-bottom:4px">After peer review, also get an AI review:</p>
+      <div class="prompt-block" style="margin:4px 0;background:#001a20">
+        <span style="color:#06b6d4;font-size:9px">"Review this component. Find any bugs, anti-patterns, or improvements. Be specific. [paste code]"</span>
+      </div>
+      <p style="font-size:11px;color:#a0aec0;margin-top:4px;margin-bottom:0">Compare: what did your peer find vs what AI found?</p>
+    </div>
+  </div>
+  <div class="plain-box" style="margin-top:10px">
+    <p class="plain-title">🧠 Why Code Review Matters</p>
+    <p style="font-size:13px;color:#fbbf24">In every professional dev team, no code ships without being reviewed. You catch bugs, share knowledge, and write cleaner code because someone else will read it. Practise this now — it's a core job skill.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 24 — HOMEWORK INTRO -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="proj-tag">Mini Project</div><div class="slide-number">24 / 26</div>
+  <h2>Mini Project Homework — The Full Brief</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div style="background:#0f1729;border:1px solid #f97316;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">What Every Option Must Have</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+          <li>✅ Vite + React + React Router</li>
+          <li>✅ A home/list page with data from an API</li>
+          <li>✅ Cards with a minimum of 3 fields each</li>
+          <li>✅ A detail page using <code>:id</code> route param</li>
+          <li>✅ A navbar with working NavLinks</li>
+          <li>✅ Loading state on every API call</li>
+          <li>✅ Error state on every API call</li>
+          <li>✅ 404 page for invalid routes</li>
+          <li>✅ Responsive — works on mobile and desktop</li>
+          <li>✅ Pushed to GitHub with a README</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Timeline & Estimate</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2d3748;padding-bottom:5px">
+            <span style="font-size:12px;color:#a0aec0">Route setup + Navbar</span>
+            <span style="font-size:12px;color:#fbbf24">~1 hour</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2d3748;padding-bottom:5px">
+            <span style="font-size:12px;color:#a0aec0">Home page + data fetch + list</span>
+            <span style="font-size:12px;color:#fbbf24">~2 hours</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2d3748;padding-bottom:5px">
+            <span style="font-size:12px;color:#a0aec0">Detail page + useParams</span>
+            <span style="font-size:12px;color:#fbbf24">~2 hours</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2d3748;padding-bottom:5px">
+            <span style="font-size:12px;color:#a0aec0">Search + filtering</span>
+            <span style="font-size:12px;color:#fbbf24">~2 hours</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding-top:2px">
+            <span style="font-size:12px;color:#a0aec0">Styling + responsive + GitHub</span>
+            <span style="font-size:12px;color:#fbbf24">~2 hours</span>
+          </div>
+        </div>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:3px">Total: 8–10 hours</p>
+        <p style="font-size:12px;color:#a0aec0">Start tonight. Don't leave it all for the night before. Use the class skeleton you built today as your starting point.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 25 — SUMMARY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Summary</div><div class="slide-number">25 / 26</div>
+  <h2>Class 17+18 — What You Now Know</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:1px solid #f97316;border-radius:8px;padding:12px">
+      <p style="font-size:10px;font-weight:700;color:#f97316;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">React Router</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li><code>BrowserRouter</code> in main.jsx</li>
+        <li><code>Routes</code> + <code>Route</code> = your page map</li>
+        <li><code>Link</code> / <code>NavLink</code> for navigation</li>
+        <li><code>:param</code> + <code>useParams()</code></li>
+        <li><code>useNavigate(-1)</code> = back button</li>
+        <li><code>path="*"</code> = 404 catch-all</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #10b981;border-radius:8px;padding:12px">
+      <p style="font-size:10px;font-weight:700;color:#10b981;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Code Quality</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>Pages in <code>/pages</code>, components in <code>/components</code></li>
+        <li>One component = one job</li>
+        <li>State lives as low as possible</li>
+        <li>Lift state when siblings need it</li>
+        <li>Never store derived values in state</li>
+        <li>Plan before you code</li>
+      </ul>
+    </div>
+    <div class="ai-box" style="border-radius:8px">
+      <p style="font-size:10px;font-weight:700;color:#06b6d4;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">AI Workflow</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>Use AI to plan before coding</li>
+        <li>Ask AI to scaffold skeletons</li>
+        <li>Paste errors for explanations</li>
+        <li>Ask AI to review your code</li>
+        <li>Understand every line you use</li>
+        <li>You are the developer. AI assists.</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:12px;background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(236,72,153,.15));border:1px solid rgba(249,115,22,.4);border-radius:8px;padding:14px;text-align:center">
+    <p style="font-size:16px;font-weight:800;color:#f5f7fa;margin-bottom:4px">You're building a real app now. 🎬 🍽️ 🌍</p>
+    <p style="font-size:13px;color:#a0aec0;max-width:700px;margin:0 auto">Multiple pages, real data from the internet, clean component structure, AI-assisted where smart. This is what frontend development looks like in the real world. You're doing it.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 26 — WHAT'S NEXT -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">What's Next</div><div class="slide-number">26 / 26</div>
+  <h2>What Comes Next — Weeks 7 &amp; 8</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:1px solid #6366f1;border-radius:10px;padding:14px;text-align:center">
+      <p style="font-size:28px;margin-bottom:8px">🎨</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">Class 19</p>
+      <p style="font-size:12px;color:#6366f1;font-weight:700;margin-bottom:8px">Tailwind CSS</p>
+      <p style="font-size:11.5px;color:#a0aec0;line-height:1.7">Give your mini project a professional UI. Stop writing custom CSS by hand. Build fast, beautiful, responsive layouts with utility classes.</p>
+    </div>
+    <div style="background:#0f1729;border:1px solid #10b981;border-radius:10px;padding:14px;text-align:center">
+      <p style="font-size:28px;margin-bottom:8px">📝</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">Class 20</p>
+      <p style="font-size:12px;color:#10b981;font-weight:700;margin-bottom:8px">Advanced Forms</p>
+      <p style="font-size:11.5px;color:#a0aec0;line-height:1.7">Complex form validation with React Hook Form. Multi-step forms, custom validation rules, and polished error messages.</p>
+    </div>
+    <div style="background:#0f1729;border:1px solid #ec4899;border-radius:10px;padding:14px;text-align:center">
+      <p style="font-size:28px;margin-bottom:8px">🔐</p>
+      <p style="font-size:14px;font-weight:700;color:#f5f7fa;margin-bottom:4px">Class 21</p>
+      <p style="font-size:12px;color:#ec4899;font-weight:700;margin-bottom:8px">Authentication</p>
+      <p style="font-size:11.5px;color:#a0aec0;line-height:1.7">Login and signup flows, JWT tokens, protected routes, and persisting user sessions across page refreshes.</p>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:12px">
+    <p style="font-size:13.5px;text-align:center"><strong>Before next class:</strong> Get your mini project skeleton running. Routes working, Navbar navigating, and the home page fetching data. Don't wait — start tonight. 🚀</p>
+  </div>
+</div>
+
+</body>
+</html>
