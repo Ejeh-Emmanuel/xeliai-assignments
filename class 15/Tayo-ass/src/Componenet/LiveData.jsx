@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import '../css/index.css';
 
 const LiveData = () => {
   // 1. STATE VARIABLES
