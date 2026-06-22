@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.movie-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(220px, 1fr)
+    );
+
+  gap: 1rem;
+
+  padding: 1rem;
+}
+
+.movie-card img {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(160px, 1fr)
+      );
+  }
+}

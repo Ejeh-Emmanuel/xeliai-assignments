@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 19+20: Tailwind CSS & Forms — XELI AI Labs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0e27;color:#f5f7fa;line-height:1.4}
+.slide{width:1200px;height:675px;margin:20px auto;background:linear-gradient(135deg,#1a1f3a 0%,#0f1729 100%);padding:35px 45px;position:relative;border:1px solid #2d3748;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+.title-slide{justify-content:center;align-items:center;text-align:center}
+.section-tag{position:absolute;top:12px;right:20px;background:rgba(99,102,241,.2);border:1px solid #6366f1;color:#6366f1;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.slide-header{position:absolute;top:12px;left:20px;font-size:12px;font-weight:700;color:#6366f1;letter-spacing:1px}
+.slide-number{position:absolute;bottom:12px;right:20px;font-size:11px;color:#a0aec0;font-weight:500}
+h1{font-size:50px;font-weight:800;margin-bottom:15px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+h2{font-size:28px;font-weight:700;margin-bottom:12px;color:#f5f7fa}
+h3{font-size:19px;font-weight:600;margin-bottom:8px;color:#6366f1}
+p{font-size:14.5px;margin-bottom:8px;color:#cbd5e0;line-height:1.5}
+.subtitle{font-size:20px;color:#a0aec0;font-weight:400;margin-top:-5px;margin-bottom:15px}
+ul,ol{margin-left:20px;margin-bottom:10px}
+li{font-size:13.5px;margin-bottom:6px;color:#cbd5e0;line-height:1.5}
+li strong{color:#6366f1;font-weight:600}
+pre{background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.6;box-shadow:0 4px 12px rgba(0,0,0,.3);overflow:hidden}
+code{font-family:'Fira Code',monospace;color:#ec4899;background:rgba(99,102,241,.1);padding:2px 5px;border-radius:3px;font-size:12.5px}
+.cc{color:#64748b}.ck{color:#6366f1;font-weight:600}.cs{color:#10b981}.cmd{color:#fbbf24}.cb{color:#f97316}.cp{color:#ec4899}.ch{color:#8b5cf6}.ct{color:#f07178}.ca{color:#ffcb6b}.cj{color:#89ddff}
+.info-box{background:rgba(99,102,241,.1);border-left:4px solid #6366f1;padding:10px 14px;margin:6px 0;border-radius:5px}
+.warn-box{background:rgba(245,158,11,.1);border-left:4px solid #f59e0b;padding:10px 14px;margin:6px 0;border-radius:5px}
+.succ-box{background:rgba(16,185,129,.1);border-left:4px solid #10b981;padding:10px 14px;margin:6px 0;border-radius:5px}
+.err-box{background:rgba(239,68,68,.1);border-left:4px solid #ef4444;padding:10px 14px;margin:6px 0;border-radius:5px}
+.plain-box{background:rgba(251,191,36,.08);border-left:4px solid #fbbf24;border-radius:5px;padding:10px 14px;margin:6px 0}
+.plain-title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fbbf24;margin-bottom:5px}
+.ai-box{background:rgba(6,182,212,.1);border-left:4px solid #06b6d4;padding:10px 14px;margin:6px 0;border-radius:5px}
+.ai-tag{position:absolute;top:12px;right:20px;background:rgba(6,182,212,.2);border:1px solid #06b6d4;color:#06b6d4;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.tw-tag{position:absolute;top:12px;right:20px;background:rgba(56,189,248,.2);border:1px solid #38bdf8;color:#38bdf8;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.form-tag{position:absolute;top:12px;right:20px;background:rgba(244,114,182,.2);border:1px solid #f472b6;color:#f472b6;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.live-badge{display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(16,185,129,.4)}
+.live-badge::before{content:"⚡ "}
+.ai-badge{display:inline-block;background:linear-gradient(135deg,#06b6d4,#0284c7);color:white;padding:5px 14px;border-radius:14px;font-size:13px;font-weight:700;margin-bottom:8px;box-shadow:0 4px 12px rgba(6,182,212,.4)}
+.ai-badge::before{content:"🤖 "}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.pat-box{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.15));border:1px solid rgba(99,102,241,.4);border-radius:8px;padding:10px 14px;margin:6px 0}
+.pat-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px}
+.col-lbl{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.old-lbl{color:#ef4444}.new-lbl{color:#10b981}
+strong{color:#6366f1;font-weight:600}
+.green{color:#10b981}.red{color:#ef4444}.yellow{color:#fbbf24}.orange{color:#f97316}.pink{color:#ec4899}.cyan{color:#0ea5e9}.teal{color:#06b6d4}.sky{color:#38bdf8}
+.slide::before{content:'';position:absolute;width:280px;height:280px;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 70%);border-radius:50%;top:-80px;right:-80px;pointer-events:none}
+.step-chip{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(99,102,241,.25);border:2px solid #6366f1;color:#6366f1;font-size:12px;font-weight:800;flex-shrink:0;margin-right:10px}
+.util-pill{display:inline-block;background:rgba(56,189,248,.15);border:1px solid #38bdf8;color:#38bdf8;padding:2px 9px;border-radius:8px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin:2px}
+.rule-pill{display:inline-block;background:rgba(244,114,182,.15);border:1px solid #f472b6;color:#f472b6;padding:2px 9px;border-radius:8px;font-size:11px;font-weight:700;font-family:'Fira Code',monospace;margin:2px}
+.prompt-block{background:#0a1628;border:1px solid #06b6d4;border-radius:8px;padding:10px 14px;margin:6px 0;font-family:'Fira Code',monospace;font-size:10px;line-height:1.7}
+.prompt-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#06b6d4;margin-bottom:6px}
+/* Mock UI preview boxes */
+.mock{background:#fff;color:#1a1a1a;border-radius:8px;overflow:hidden;font-family:'Inter',sans-serif}
+.mock-btn{display:inline-block;padding:8px 18px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — TITLE -->
+<div class="slide title-slide">
+  <div style="margin-bottom:10px">
+    <span style="font-size:13px;color:#6366f1;font-weight:700;letter-spacing:3px;text-transform:uppercase">XELI AI LABS • Frontend Engineering</span>
+  </div>
+  <h1 style="font-size:52px">CLASS 19 + 20</h1>
+  <h2 style="font-size:32px;margin-top:6px;background:linear-gradient(135deg,#38bdf8,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Tailwind CSS &amp; Forms 🎨📝</h2>
+  <p class="subtitle" style="font-size:18px;margin-top:16px">Make it look professional. Make it validate properly.</p>
+  <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(56,189,248,.15);border:1px solid #38bdf8;color:#38bdf8;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Tailwind Utilities</span>
+    <span style="background:rgba(99,102,241,.15);border:1px solid #6366f1;color:#6366f1;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Responsive Design</span>
+    <span style="background:rgba(244,114,182,.15);border:1px solid #f472b6;color:#f472b6;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">React Hook Form</span>
+    <span style="background:rgba(16,185,129,.15);border:1px solid #10b981;color:#10b981;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">Validation</span>
+    <span style="background:rgba(6,182,212,.15);border:1px solid #06b6d4;color:#06b6d4;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:700">🤖 AI Workflow</span>
+  </div>
+  <div class="slide-number">1 / 26</div>
+</div>
+
+
+<!-- SLIDE 2 — AGENDA -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Agenda</div><div class="slide-number">2 / 26</div>
+  <h2>Today's Game Plan 🗺️</h2>
+  <p style="color:#a0aec0;margin-top:-8px;margin-bottom:14px">We're combining two big topics into one session. Both feed directly into your mini project — make it look good AND collect input safely.</p>
+  <div class="three-col">
+    <div style="background:#0f1729;border:1px solid #38bdf8;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 1 — 50 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">Tailwind CSS</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>Why utility classes?</li>
+        <li>Install + setup</li>
+        <li>Core utilities: layout, spacing, colour, text</li>
+        <li>Responsive prefixes</li>
+        <li>Convert a real component live</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #f472b6;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#f472b6;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 2 — 50 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">Forms &amp; Validation</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>Controlled vs uncontrolled (quick)</li>
+        <li>React Hook Form setup</li>
+        <li>Validation rules</li>
+        <li>Showing errors properly</li>
+        <li>Submit handling</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #06b6d4;border-radius:10px;padding:14px">
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Part 3 — 45 mins</p>
+      <p style="font-size:16px;font-weight:700;color:#f5f7fa;margin-bottom:6px">🤖 Build It Together</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.85;color:#a0aec0">
+        <li>AI for Tailwind class combos</li>
+        <li>AI for validation rules</li>
+        <li>Live build: styled, validated form</li>
+        <li>Homework walkthrough</li>
+      </ul>
+    </div>
+  </div>
+  <div class="succ-box" style="margin-top:10px">
+    <p style="font-size:13px;text-align:center"><strong>By the end of today:</strong> Your mini project can have a professional, responsive look AND a contact/search form that validates input properly. Two huge upgrades in one session. 🚀</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 3 — PART 1 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">3 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#38bdf8;letter-spacing:3px;text-transform:uppercase">Part 1 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">🎨</p>
+  <h1 style="font-size:48px">Tailwind CSS</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Stop writing custom CSS files. Style directly in your JSX.</p>
+  <div class="plain-box" style="max-width:700px;margin:20px auto 0">
+    <p class="plain-title">🧠 Before We Start</p>
+    <p style="font-size:13px;color:#fbbf24">Right now, styling means: write a CSS file, invent a class name, switch files, write the CSS, switch back, hope you spelled the class name the same in both places. Tailwind removes all of that — you style directly where you're already working.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 4 — CSS APPROACHES RECAP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">CSS Approaches</div><div class="slide-number">4 / 26</div>
+  <h2>3 Ways to Style React — Quick Recap</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24">You've already used two of these without thinking about it. Today we add a third — and it's the one most companies actually use in production.</p>
+  </div>
+  <div class="three-col" style="align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">1. Separate CSS File</p>
+      <pre style="font-size:9px"><span class="cc">/* Card.css */</span>
+.card {
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+}
+
+<span class="cc">// Card.jsx</span>
+<span class="ck">import</span> <span class="cs">'./Card.css'</span>;
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"card"</span><span class="ct">&gt;</span>...<span class="ct">&lt;/div&gt;</span></pre>
+      <div class="warn-box" style="margin-top:4px;padding:6px 10px"><p style="font-size:11px;margin:0">Two files to manage. Class names can clash globally.</p></div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">2. Inline Styles</p>
+      <pre style="font-size:9px"><span class="cc">// No CSS file needed</span>
+<span class="ct">&lt;div</span> <span class="ca">style</span><span class="cj">={{</span>
+  padding: <span class="cs">'16px'</span>,
+  borderRadius: <span class="cs">'8px'</span>,
+  background: <span class="cs">'white'</span>
+<span class="cj">}}</span><span class="ct">&gt;</span>...<span class="ct">&lt;/div&gt;</span></pre>
+      <div class="warn-box" style="margin-top:4px;padding:6px 10px"><p style="font-size:11px;margin:0">No hover/media queries. Gets messy fast with many styles.</p></div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">3. Tailwind (Today!) 🆕</p>
+      <pre style="font-size:9px"><span class="cc">// One file. Style right where you write JSX.</span>
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"p-4 rounded-lg bg-white</span>
+  <span class="cs">hover:shadow-lg md:p-6"</span><span class="ct">&gt;</span>
+  ...
+<span class="ct">&lt;/div&gt;</span></pre>
+      <div class="succ-box" style="margin-top:4px;padding:6px 10px"><p style="font-size:11px;margin:0">No file switching. Hover &amp; responsive built in. Industry standard.</p></div>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top:8px">
+    <p style="font-size:12px;margin:0"><strong>Why does this matter for your career?</strong> Tailwind is used by Netflix, GitHub, OpenAI, and thousands of startups. Job postings frequently list it as a requirement. You're learning an industry-standard tool, not a course gimmick.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 5 — WHAT IS TAILWIND -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="tw-tag">Tailwind Basics</div><div class="slide-number">5 / 26</div>
+  <h2>What Is Tailwind? — Utility Classes Explained</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:10px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Normal CSS: you invent a name like <code>.product-card</code>, then write what it means. Tailwind: the name <em>is</em> what it means. <code>p-4</code> means "padding: 1rem". <code>text-center</code> means "text-align: center". You're not naming things — you're describing them directly.
+        <br><br>
+        Think of it like LEGO bricks. Each utility class is one small brick. You combine many small bricks to build the exact shape you want.</p>
+      </div>
+      <pre style="font-size:10px"><span class="cc">// Traditional CSS approach:</span>
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"card"</span><span class="ct">&gt;</span>Hello<span class="ct">&lt;/div&gt;</span>
+
+.card {
+  padding: <span class="cp">16px</span>;
+  background-color: <span class="cs">white</span>;
+  border-radius: <span class="cp">8px</span>;
+  font-weight: <span class="cs">bold</span>;
+  text-align: <span class="cs">center</span>;
+}
+
+<span class="cc">// ─────────────────────────────</span>
+
+<span class="cc">// Tailwind approach — same result:</span>
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"p-4 bg-white rounded-lg
+  font-bold text-center"</span><span class="ct">&gt;</span>
+  Hello
+<span class="ct">&lt;/div&gt;</span>
+<span class="cc">// No separate CSS file at all!</span></pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:14px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Reading Tailwind Class Names</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.3;color:#cbd5e0">
+          <div><span class="util-pill">p-4</span> padding: 1rem (16px)</div>
+          <div><span class="util-pill">m-2</span> margin: 0.5rem (8px)</div>
+          <div><span class="util-pill">text-center</span> text-align: center</div>
+          <div><span class="util-pill">bg-blue-500</span> background: blue, shade 500</div>
+          <div><span class="util-pill">rounded-lg</span> border-radius: large</div>
+          <div><span class="util-pill">font-bold</span> font-weight: bold</div>
+        </div>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ The Spacing Scale (memorise this)</p>
+        <p style="font-size:12px;color:#a0aec0">Tailwind numbers = multiples of 0.25rem (4px). <code>p-1</code>=4px, <code>p-2</code>=8px, <code>p-4</code>=16px, <code>p-8</code>=32px. Once you know this scale, every spacing class makes sense instantly.</p>
+      </div>
+      <div class="ai-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">🤖 <strong>Forgot a class name?</strong> Ask AI: "What's the Tailwind class for a 2px solid grey border with rounded corners?" Faster than searching docs while learning.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 6 — INSTALLATION -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="tw-tag">Setup</div><div class="slide-number">6 / 26</div>
+  <h2>Installing Tailwind in a Vite Project</h2>
+  <span class="live-badge">Live Setup</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Step 1 — Install packages</p>
+      <pre><span class="cc"># In your project folder:</span>
+npm install tailwindcss @tailwindcss/vite</pre>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;margin-top:8px">Step 2 — Add the Vite plugin</p>
+      <pre style="font-size:9.5px"><span class="cc">// vite.config.js</span>
+<span class="ck">import</span> { <span class="cmd">defineConfig</span> } <span class="ck">from</span> <span class="cs">'vite'</span>;
+<span class="ck">import</span> <span class="cmd">react</span> <span class="ck">from</span> <span class="cs">'@vitejs/plugin-react'</span>;
+<span class="ck">import</span> <span class="cmd">tailwindcss</span> <span class="ck">from</span> <span class="cs">'@tailwindcss/vite'</span>;
+
+<span class="ck">export default</span> <span class="cmd">defineConfig</span>({
+  plugins: [<span class="cmd">react</span>(), <span class="cmd">tailwindcss</span>()],
+});</pre>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;margin-top:8px">Step 3 — Import Tailwind in your CSS</p>
+      <pre style="font-size:9.5px"><span class="cc">/* src/index.css — replace everything with: */</span>
+<span class="cb">@import</span> <span class="cs">"tailwindcss"</span>;</pre>
+    </div>
+    <div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Checklist</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li><code>index.css</code> is imported in <code>main.jsx</code></li>
+          <li>Restart your dev server (<code>npm run dev</code>) after config changes</li>
+          <li>Test: add <code>className="text-red-500"</code> to any element. Does it turn red?</li>
+        </ul>
+      </div>
+      <div class="warn-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:4px">⚠️ Common Mistake</p>
+        <p style="font-size:12px;color:#a0aec0">Forgetting to restart the dev server after editing <code>vite.config.js</code>. Config changes need a full restart — refreshing the browser isn't enough.</p>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 <strong>If setup fails:</strong> "I'm setting up Tailwind CSS v4 in a Vite + React project. I'm getting this error: [paste error]. My vite.config.js looks like this: [paste]. What's wrong?"</p>
+      </div>
+      <div class="info-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0"><strong>VS Code tip:</strong> Install the "Tailwind CSS IntelliSense" extension. It autocompletes class names and shows colour previews as you type.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 7 — LAYOUT & SPACING -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Layout & Spacing</div><div class="slide-number">7 / 26</div>
+  <h2>Core Utilities — Layout &amp; Spacing</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Display &amp; Flexbox (you know these concepts!)</p>
+      <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin-bottom:8px">
+        <div><span class="util-pill">flex</span> display: flex</div>
+        <div><span class="util-pill">grid</span> display: grid</div>
+        <div><span class="util-pill">flex-col</span> flex-direction: column</div>
+        <div><span class="util-pill">items-center</span> align-items: center</div>
+        <div><span class="util-pill">justify-between</span> justify-content: space-between</div>
+        <div><span class="util-pill">gap-4</span> gap: 1rem between items</div>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Spacing — padding (p) &amp; margin (m)</p>
+      <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px">
+        <div><span class="util-pill">p-4</span> padding all sides: 1rem</div>
+        <div><span class="util-pill">px-4</span> padding left+right only</div>
+        <div><span class="util-pill">py-2</span> padding top+bottom only</div>
+        <div><span class="util-pill">mt-4</span> margin-top: 1rem</div>
+        <div><span class="util-pill">mx-auto</span> margin left+right: auto (centers)</div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Live Example — A Card with Flexbox</p>
+      <pre style="font-size:9px"><span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"flex items-center gap-4 p-4
+  bg-white rounded-lg shadow-md"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;img</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"w-12 h-12 rounded-full"</span>
+       <span class="ca">src</span><span class="cj">=</span><span class="cs">"avatar.jpg"</span> <span class="ct">/&gt;</span>
+  <span class="ct">&lt;div&gt;</span>
+    <span class="ct">&lt;h3</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"font-bold"</span><span class="ct">&gt;</span>Tolu Adebayo<span class="ct">&lt;/h3&gt;</span>
+    <span class="ct">&lt;p</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-gray-500 text-sm"</span><span class="ct">&gt;</span>
+      Frontend Developer
+    <span class="ct">&lt;/p&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/div&gt;</span></pre>
+      <div class="mock" style="margin-top:8px;padding:0">
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.15)">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6)"></div>
+          <div>
+            <p style="font-size:13px;font-weight:700;margin:0;color:#1a1a1a">Tolu Adebayo</p>
+            <p style="font-size:11px;color:#888;margin:0">Frontend Developer</p>
+          </div>
+        </div>
+      </div>
+      <div class="succ-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">Every Flexbox concept from Class 4 maps directly to a Tailwind class. <code>justify-content: center</code> → <code>justify-center</code>. The CSS knowledge transfers completely.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 8 — COLORS & TYPOGRAPHY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Colours & Text</div><div class="slide-number">8 / 26</div>
+  <h2>Colours &amp; Typography — The Naming System</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Tailwind colours work like a paint shade chart: <code>{color}-{shade}</code>. The colour name (blue, red, green) plus a number from 50 (very light) to 950 (very dark). <code>bg-blue-500</code> is a medium blue. <code>bg-blue-100</code> is a very light blue.</p>
+      </div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Colour Shade Scale (blue example)</p>
+        <div style="display:flex;gap:4px">
+          <div style="flex:1;height:28px;background:#eff6ff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#333">50</div>
+          <div style="flex:1;height:28px;background:#bfdbfe;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#333">200</div>
+          <div style="flex:1;height:28px;background:#60a5fa;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff">400</div>
+          <div style="flex:1;height:28px;background:#3b82f6;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff">500</div>
+          <div style="flex:1;height:28px;background:#1d4ed8;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff">700</div>
+          <div style="flex:1;height:28px;background:#1e3a8a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff">900</div>
+        </div>
+        <p style="font-size:10px;color:#a0aec0;margin-top:6px;margin-bottom:0">bg-blue-50 → bg-blue-200 → bg-blue-400 → bg-blue-500 → bg-blue-700 → bg-blue-900</p>
+      </div>
+      <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px">
+        <div><span class="util-pill">text-blue-600</span> text colour</div>
+        <div><span class="util-pill">bg-gray-100</span> background colour</div>
+        <div><span class="util-pill">border-red-500</span> border colour</div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Typography Utilities</p>
+      <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin-bottom:8px">
+        <div><span class="util-pill">text-sm</span> / <span class="util-pill">text-base</span> / <span class="util-pill">text-lg</span> / <span class="util-pill">text-xl</span> / <span class="util-pill">text-2xl</span></div>
+        <div style="margin-top:4px"><span class="util-pill">font-normal</span> / <span class="util-pill">font-semibold</span> / <span class="util-pill">font-bold</span></div>
+        <div style="margin-top:4px"><span class="util-pill">text-left</span> / <span class="util-pill">text-center</span> / <span class="util-pill">text-right</span></div>
+        <div style="margin-top:4px"><span class="util-pill">leading-relaxed</span> line-height</div>
+        <div style="margin-top:4px"><span class="util-pill">tracking-wide</span> letter-spacing</div>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Borders, Shadows &amp; Rounding</p>
+      <div style="font-family:'Fira Code',monospace;font-size:10.5px;line-height:2.1;color:#cbd5e0;background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:10px;margin-bottom:8px">
+        <div><span class="util-pill">rounded</span> / <span class="util-pill">rounded-lg</span> / <span class="util-pill">rounded-full</span></div>
+        <div style="margin-top:4px"><span class="util-pill">shadow</span> / <span class="util-pill">shadow-md</span> / <span class="util-pill">shadow-lg</span></div>
+        <div style="margin-top:4px"><span class="util-pill">border</span> / <span class="util-pill">border-2</span></div>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 "Give me 5 different Tailwind colour combos for a 'Save' button — different vibes (playful, professional, minimal, bold, dark mode)." Great for exploring options fast.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 9 — RESPONSIVE DESIGN -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="tw-tag">Responsive</div><div class="slide-number">9 / 26</div>
+  <h2>Responsive Design — Breakpoint Prefixes</h2>
+  <div class="plain-box" style="margin-bottom:10px">
+    <p class="plain-title">🧠 In Plain English</p>
+    <p style="font-size:13px;color:#fbbf24">Remember media queries from Class 5? <code>@media (min-width: 768px) { ... }</code> — that was a lot of typing for one rule. In Tailwind, you just prefix any class with a breakpoint name. <code>md:flex</code> means "apply <code>flex</code> ONLY on screens 768px and wider." Mobile styles are the default (no prefix); add prefixes for bigger screens.</p>
+  </div>
+  <div class="two-col" style="align-items:start">
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">The Breakpoint Scale</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.3;color:#cbd5e0">
+          <div><span class="util-pill">(none)</span> mobile — default, always applies</div>
+          <div><span class="util-pill">sm:</span> ≥ 640px — large phones</div>
+          <div><span class="util-pill">md:</span> ≥ 768px — tablets</div>
+          <div><span class="util-pill">lg:</span> ≥ 1024px — laptops</div>
+          <div><span class="util-pill">xl:</span> ≥ 1280px — desktops</div>
+        </div>
+      </div>
+      <pre style="font-size:10px"><span class="cc">// Mobile-first: 1 column → 2 → 4 as screen grows</span>
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"grid grid-cols-1
+  md:grid-cols-2 lg:grid-cols-4 gap-4"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;Card /&gt;</span> <span class="ct">&lt;Card /&gt;</span> <span class="ct">&lt;Card /&gt;</span> <span class="ct">&lt;Card /&gt;</span>
+<span class="ct">&lt;/div&gt;</span>
+
+<span class="cc">// Read it like a sentence:</span>
+<span class="cc">// "1 column normally, 2 on tablets,</span>
+<span class="cc">//  4 on laptops and up"</span></pre>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Visual: Same Grid, 3 Screen Sizes</p>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:6px">
+        <p style="font-size:10px;color:#a0aec0;margin-bottom:4px">📱 Mobile (default — grid-cols-1)</p>
+        <div style="display:grid;grid-template-columns:1fr;gap:4px">
+          <div style="background:#6366f1;height:18px;border-radius:3px"></div>
+          <div style="background:#6366f1;height:18px;border-radius:3px"></div>
+        </div>
+      </div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:6px">
+        <p style="font-size:10px;color:#a0aec0;margin-bottom:4px">📱 Tablet (md:grid-cols-2)</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+          <div style="background:#8b5cf6;height:18px;border-radius:3px"></div>
+          <div style="background:#8b5cf6;height:18px;border-radius:3px"></div>
+        </div>
+      </div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:8px">
+        <p style="font-size:10px;color:#a0aec0;margin-bottom:4px">💻 Laptop (lg:grid-cols-4)</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px">
+          <div style="background:#10b981;height:18px;border-radius:3px"></div>
+          <div style="background:#10b981;height:18px;border-radius:3px"></div>
+          <div style="background:#10b981;height:18px;border-radius:3px"></div>
+          <div style="background:#10b981;height:18px;border-radius:3px"></div>
+        </div>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;margin:0"><strong>Same class string. Three layouts.</strong> Resize your browser right now while looking at any Tailwind site — watch the grid columns change live.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 10 — HOVER, STATES & DARK MODE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="tw-tag">States</div><div class="slide-number">10 / 26</div>
+  <h2>Hover, Focus &amp; Other States — No JavaScript Needed</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Want a button to get darker when you hover? In plain CSS that's a <code>:hover</code> selector in a separate rule. In Tailwind, you just add <code>hover:</code> in front of any class, right in the same className string.</p>
+      </div>
+      <pre style="font-size:9.5px"><span class="cc">// A button with hover + focus states</span>
+<span class="ct">&lt;button</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"px-4 py-2 bg-indigo-600
+  text-white rounded-lg font-semibold
+  hover:bg-indigo-700
+  focus:ring-2 focus:ring-indigo-300
+  transition-colors"</span><span class="ct">&gt;</span>
+  Save Changes
+<span class="ct">&lt;/button&gt;</span>
+
+<span class="cc">// hover:bg-indigo-700  → darker on hover</span>
+<span class="cc">// focus:ring-2         → ring when focused</span>
+<span class="cc">// transition-colors    → smooth animation</span></pre>
+      <div class="mock" style="margin-top:8px;padding:14px">
+        <div class="mock-btn" style="background:#4f46e5;color:#fff">Save Changes</div>
+        <p style="font-size:10px;color:#888;margin-top:6px">Hover over this in your browser — Tailwind buttons feel the same way</p>
+      </div>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Common State Prefixes</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.3;color:#cbd5e0">
+          <div><span class="util-pill">hover:</span> when mouse is over the element</div>
+          <div><span class="util-pill">focus:</span> when an input/button is focused</div>
+          <div><span class="util-pill">disabled:</span> when an input/button is disabled</div>
+          <div><span class="util-pill">active:</span> while being clicked</div>
+        </div>
+      </div>
+      <div class="pat-box">
+        <p class="pat-title">Combining Prefixes</p>
+        <p style="font-size:12px;color:#cbd5e0">You can stack them: <code>md:hover:bg-blue-700</code> means "on tablets and up, when hovering, make the background blue-700." Read left to right like layered conditions.</p>
+      </div>
+      <div class="ai-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0">🤖 <strong>AI Prompt:</strong> "Give me Tailwind classes for a card that has a subtle shadow normally, and a larger shadow + slight scale-up on hover, with a smooth transition."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 11 — LIVE CONVERSION -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Live Coding</div><div class="slide-number">11 / 26</div>
+  <h2>Live Build — Converting a Card to Tailwind</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <p class="col-lbl old-lbl">❌ Before — Custom CSS</p>
+      <pre style="font-size:9px"><span class="cc">/* MovieCard.css */</span>
+.movie-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.movie-card:hover {
+  transform: translateY(-4px);
+}
+.movie-card img { width: 100%; }
+.movie-card-body { padding: 12px; }
+.movie-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.movie-card p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+<span class="cc">/* MovieCard.jsx */</span>
+<span class="ck">import</span> <span class="cs">'./MovieCard.css'</span>;
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"movie-card"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;img</span> <span class="ca">src</span><span class="cj">={</span>poster<span class="cj">}</span> <span class="ct">/&gt;</span>
+  <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"movie-card-body"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h3&gt;</span><span class="cj">{</span>title<span class="cj">}</span><span class="ct">&lt;/h3&gt;</span>
+    <span class="ct">&lt;p&gt;</span>⭐ <span class="cj">{</span>rating<span class="cj">}</span><span class="ct">&lt;/p&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/div&gt;</span></pre>
+    </div>
+    <div>
+      <p class="col-lbl new-lbl">✅ After — Tailwind (no CSS file!)</p>
+      <pre style="font-size:9px"><span class="cc">// MovieCard.jsx — that's the WHOLE file</span>
+<span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"bg-white rounded-xl overflow-hidden
+  shadow-md hover:-translate-y-1
+  transition-transform"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;img</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"w-full"</span> <span class="ca">src</span><span class="cj">={</span>poster<span class="cj">}</span> <span class="ct">/&gt;</span>
+  <span class="ct">&lt;div</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"p-3"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;h3</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-base font-bold mb-1"</span><span class="ct">&gt;</span>
+      <span class="cj">{</span>title<span class="cj">}</span>
+    <span class="ct">&lt;/h3&gt;</span>
+    <span class="ct">&lt;p</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-gray-500 text-sm"</span><span class="ct">&gt;</span>
+      ⭐ <span class="cj">{</span>rating<span class="cj">}</span>
+    <span class="ct">&lt;/p&gt;</span>
+  <span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/div&gt;</span></pre>
+      <div class="succ-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0"><strong>One file. No import. No naming decisions. No risk of an unused CSS file lingering in your project.</strong> This is why teams move fast with Tailwind.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 12 — TAILWIND RECAP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Recap</div><div class="slide-number">12 / 26</div>
+  <h2>Tailwind Recap — Before We Move to Forms</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="succ-box">
+      <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Layout &amp; Spacing</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li><code>flex</code>, <code>grid</code>, <code>items-center</code></li>
+        <li><code>p-4</code>, <code>px-2</code>, <code>m-4</code>, <code>gap-4</code></li>
+        <li>Numbers = × 4px (Tailwind v4)</li>
+      </ul>
+    </div>
+    <div class="info-box">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Colour, Text &amp; Shape</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li><code>bg-{'{'}color{'}'}-{'{'}shade{'}'}</code></li>
+        <li><code>text-lg</code>, <code>font-bold</code></li>
+        <li><code>rounded-lg</code>, <code>shadow-md</code></li>
+      </ul>
+    </div>
+    <div class="pat-box">
+      <p style="font-size:11px;font-weight:700;color:#8b5cf6;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Responsive &amp; States</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+        <li><code>sm: md: lg: xl:</code> prefixes</li>
+        <li><code>hover: focus: disabled:</code></li>
+        <li>Mobile-first, no prefix = default</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:12px">
+    <p style="font-size:13.5px;text-align:center"><strong>Quick check — turn to your neighbour:</strong> What does <code>md:flex hover:bg-blue-600</code> mean in plain English? If you can explain it, you've got Tailwind.</p>
+  </div>
+  <div class="info-box" style="margin-top:8px">
+    <p style="font-size:13px;text-align:center">10-minute break, then Part 2: Forms &amp; Validation 📝</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 13 — PART 2 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">13 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#f472b6;letter-spacing:3px;text-transform:uppercase">Part 2 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">📝</p>
+  <h1 style="font-size:48px">Forms &amp; Validation</h1>
+  <p style="font-size:22px;color:#a0aec0;margin-top:10px">Make sure the data your users submit is actually usable.</p>
+  <div class="plain-box" style="max-width:700px;margin:20px auto 0">
+    <p class="plain-title">🧠 Before We Start</p>
+    <p style="font-size:13px;color:#fbbf24">You've built controlled inputs since Class 14 — one useState per field, onChange updates it. That works for 1-2 fields. For a form with 5+ fields and validation rules, that approach becomes a LOT of repetitive code. React Hook Form solves this.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 14 — CONTROLLED VS UNCONTROLLED -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="form-tag">Forms Basics</div><div class="slide-number">14 / 26</div>
+  <h2>Controlled vs Uncontrolled — Quick Recap</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24"><strong>Controlled</strong> (what you've been doing): React state holds the value. Every keystroke updates state, state updates the input. React is "in control."
+        <br><br>
+        <strong>Uncontrolled</strong>: the DOM holds the value itself, like a normal HTML form. You only "read" the value when needed (e.g. on submit) using a ref.</p>
+      </div>
+      <p class="col-lbl old-lbl">Controlled (Class 14 style)</p>
+      <pre style="font-size:9.5px"><span class="ck">const</span> [name, setName] = <span class="cmd">useState</span>(<span class="cs">''</span>);
+
+<span class="ct">&lt;input</span>
+  <span class="ca">value</span><span class="cj">={</span>name<span class="cj">}</span>
+  <span class="ca">onChange</span><span class="cj">={</span>e => <span class="cmd">setName</span>(e.target.value)<span class="cj">}</span>
+<span class="ct">/&gt;</span>
+<span class="cc">// Every keystroke = a re-render</span>
+<span class="cc">// Fine for 1-2 fields.</span>
+<span class="cc">// For 6 fields = 6 useState + 6 onChange 😩</span></pre>
+    </div>
+    <div>
+      <p class="col-lbl new-lbl">Uncontrolled (React Hook Form style)</p>
+      <pre style="font-size:9.5px"><span class="ck">const</span> { register } = <span class="cmd">useForm</span>();
+
+<span class="ct">&lt;input</span> <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'name'</span>)<span class="cj">}</span> <span class="ct">/&gt;</span>
+<span class="cc">// register() handles value + onChange for you</span>
+<span class="cc">// No useState per field needed!</span>
+<span class="cc">// React Hook Form reads values only</span>
+<span class="cc">// when you submit — fewer re-renders</span></pre>
+      <div class="succ-box" style="margin-top:6px">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Why React Hook Form?</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>No useState for each field</li>
+          <li>Built-in validation rules</li>
+          <li>Automatic error messages</li>
+          <li>Better performance on big forms</li>
+          <li>Industry standard — used everywhere</li>
+        </ul>
+      </div>
+      <div class="warn-box" style="margin-top:6px">
+        <p style="font-size:12px;margin:0">You're not "forgetting" useState — for forms specifically, this is simply the better tool for the job.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 15 — REACT HOOK FORM SETUP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="form-tag">React Hook Form</div><div class="slide-number">15 / 26</div>
+  <h2>React Hook Form — Basic Setup</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre><span class="cc"># Install:</span>
+npm install react-hook-form</pre>
+      <pre style="font-size:9.5px"><span class="ck">import</span> { <span class="cmd">useForm</span> } <span class="ck">from</span> <span class="cs">'react-hook-form'</span>;
+
+<span class="ck">const</span> <span class="cmd">ContactForm</span> = () => {
+  <span class="ck">const</span> {
+    register,         <span class="cc">// connects inputs</span>
+    handleSubmit,     <span class="cc">// wraps your submit fn</span>
+    formState: { errors }  <span class="cc">// validation errors</span>
+  } = <span class="cmd">useForm</span>();
+
+  <span class="ck">const</span> <span class="cmd">onSubmit</span> = (data) => {
+    console.<span class="cmd">log</span>(data);
+    <span class="cc">// data = { name: 'Tolu', email: '...' }</span>
+    <span class="cc">// All fields, automatically collected!</span>
+  };
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;form</span> <span class="ca">onSubmit</span><span class="cj">={</span>handleSubmit(onSubmit)<span class="cj">}</span><span class="ct">&gt;</span>
+      <span class="ct">&lt;input</span> <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'name'</span>)<span class="cj">}</span>
+        <span class="ca">placeholder</span><span class="cj">=</span><span class="cs">"Your name"</span> <span class="ct">/&gt;</span>
+
+      <span class="ct">&lt;input</span> <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'email'</span>)<span class="cj">}</span>
+        <span class="ca">placeholder</span><span class="cj">=</span><span class="cs">"Your email"</span> <span class="ct">/&gt;</span>
+
+      <span class="ct">&lt;button</span> <span class="ca">type</span><span class="cj">=</span><span class="cs">"submit"</span><span class="ct">&gt;</span>Send<span class="ct">&lt;/button&gt;</span>
+    <span class="ct">&lt;/form&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <div class="pat-box" style="margin-bottom:8px">
+        <p class="pat-title">The 3 Things You Get From useForm()</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.3;color:#cbd5e0">
+          <div><span class="rule-pill">register</span> — spread onto each input</div>
+          <div><span class="rule-pill">handleSubmit</span> — wraps your submit function</div>
+          <div><span class="rule-pill">formState.errors</span> — validation errors</div>
+        </div>
+      </div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 What does {'{...register(\'name\')}'} do?</p>
+        <p style="font-size:13px;color:#fbbf24">The <code>{'{...spread}'}</code> drops several props onto the input at once: <code>name</code>, <code>onChange</code>, <code>onBlur</code>, and a <code>ref</code>. It's the same as writing all four manually — register() does it in one line.</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;margin:0"><strong>handleSubmit(onSubmit)</strong> does two things: it calls <code>e.preventDefault()</code> for you (no more forgetting!) AND it only calls your <code>onSubmit</code> if validation passes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 16 — VALIDATION RULES -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="form-tag">Validation</div><div class="slide-number">16 / 26</div>
+  <h2>Validation Rules — Built Right Into register()</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 In Plain English</p>
+        <p style="font-size:13px;color:#fbbf24">Pass a second argument to <code>register()</code> — an object describing the rules. React Hook Form checks these automatically on submit (and optionally as the user types). No manual if-statements needed.</p>
+      </div>
+      <pre style="font-size:9px"><span class="ct">&lt;input</span>
+  <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'email'</span>, {
+    required: <span class="cs">'Email is required'</span>,
+    pattern: {
+      value: <span class="ch">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span>,
+      message: <span class="cs">'Enter a valid email'</span>
+    }
+  })<span class="cj">}</span>
+/&gt;
+
+<span class="ct">&lt;input</span> <span class="ca">type</span><span class="cj">=</span><span class="cs">"password"</span>
+  <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'password'</span>, {
+    required: <span class="cs">'Password is required'</span>,
+    minLength: {
+      value: <span class="cp">8</span>,
+      message: <span class="cs">'Must be at least 8 characters'</span>
+    }
+  })<span class="cj">}</span>
+/&gt;
+
+<span class="ct">&lt;input</span> <span class="ca">type</span><span class="cj">=</span><span class="cs">"number"</span>
+  <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'age'</span>, {
+    required: <span class="cs">'Age is required'</span>,
+    min: { value: <span class="cp">18</span>, message: <span class="cs">'Must be 18+'</span> }
+  })<span class="cj">}</span>
+/&gt;</pre>
+    </div>
+    <div>
+      <div style="background:#0f1729;border:1px solid #2d3748;border-radius:8px;padding:12px;margin-bottom:8px">
+        <p style="font-size:10px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Built-in Validation Rules</p>
+        <div style="font-family:'Fira Code',monospace;font-size:11px;line-height:2.3;color:#cbd5e0">
+          <div><span class="rule-pill">required</span> — field cannot be empty</div>
+          <div><span class="rule-pill">minLength / maxLength</span> — text length</div>
+          <div><span class="rule-pill">min / max</span> — number range</div>
+          <div><span class="rule-pill">pattern</span> — regex match (email, etc.)</div>
+        </div>
+      </div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ Each rule has a custom message</p>
+        <p style="font-size:12px;color:#a0aec0">Instead of a generic "Invalid input", you write the exact message the user sees: "Must be at least 8 characters". This message lives in <code>errors.fieldName.message</code> — shown on the next slide.</p>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 <strong>AI Prompt:</strong> "Write a React Hook Form regex pattern for a Nigerian phone number (11 digits, starting with 0). Include a helpful error message."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 17 — SHOWING ERRORS -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="form-tag">Error UX</div><div class="slide-number">17 / 26</div>
+  <h2>Showing Errors — Good UX Matters</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <pre style="font-size:9.5px"><span class="ct">&lt;div&gt;</span>
+  <span class="ct">&lt;label&gt;</span>Email<span class="ct">&lt;/label&gt;</span>
+  <span class="ct">&lt;input</span>
+    <span class="ca">className</span><span class="cj">={`</span>border rounded p-2 w-full
+      <span class="cj">${</span>errors.email
+        ? <span class="cs">'border-red-500'</span>
+        : <span class="cs">'border-gray-300'</span><span class="cj">}`}</span>
+    <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'email'</span>, {
+      required: <span class="cs">'Email is required'</span>,
+      pattern: {
+        value: <span class="ch">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span>,
+        message: <span class="cs">'Enter a valid email'</span>
+      }
+    })<span class="cj">}</span>
+  <span class="ct">/&gt;</span>
+
+  <span class="cc">{/* Show error message if it exists */}</span>
+  <span class="cj">{</span>errors.email &amp;&amp; (
+    <span class="ct">&lt;p</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-red-500 text-sm mt-1"</span><span class="ct">&gt;</span>
+      <span class="cj">{</span>errors.email.message<span class="cj">}</span>
+    <span class="ct">&lt;/p&gt;</span>
+  )<span class="cj">}</span>
+<span class="ct">&lt;/div&gt;</span></pre>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">What This Looks Like</p>
+      <div class="mock" style="padding:14px;margin-bottom:8px">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Email</label>
+        <input style="width:100%;padding:8px;border:2px solid #ef4444;border-radius:6px;font-size:13px;box-sizing:border-box" value="tolu@" readonly />
+        <p style="font-size:11px;color:#ef4444;margin-top:4px;margin-bottom:0">Enter a valid email</p>
+      </div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 The Pattern Every Field Follows</p>
+        <p style="font-size:13px;color:#fbbf24">1. Conditional border colour (red if error exists)<br>
+        2. <code>{'{...register(...)}'}</code> with validation rules<br>
+        3. <code>{'{errors.field && <p>...</p>}'}</code> below the input<br>
+        Copy this pattern for every field in your form.</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ UX Best Practices</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Show errors only after the user interacts with the field (default behaviour)</li>
+          <li>Error messages should say what to DO, not just what's wrong</li>
+          <li>Use red colour + icon for clear visual signal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 18 — FULL FORM EXAMPLE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Live Coding</div><div class="slide-number">18 / 26</div>
+  <h2>Full Example — Styled, Validated Contact Form</h2>
+  <span class="live-badge">Live Coding</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <pre style="font-size:8.5px"><span class="ck">import</span> { <span class="cmd">useForm</span> } <span class="ck">from</span> <span class="cs">'react-hook-form'</span>;
+
+<span class="ck">const</span> <span class="cmd">ContactForm</span> = () => {
+  <span class="ck">const</span> { register, handleSubmit, formState: { errors, isSubmitting } }
+    = <span class="cmd">useForm</span>();
+
+  <span class="ck">const</span> <span class="cmd">onSubmit</span> = <span class="ck">async</span> (data) => {
+    <span class="ck">await</span> <span class="ck">new</span> <span class="cmd">Promise</span>(r => <span class="cmd">setTimeout</span>(r, <span class="cp">1000</span>)); <span class="cc">// fake API call</span>
+    console.<span class="cmd">log</span>(<span class="cs">'Submitted:'</span>, data);
+  };
+
+  <span class="ck">return</span> (
+    <span class="ct">&lt;form</span> <span class="ca">onSubmit</span><span class="cj">={</span>handleSubmit(onSubmit)<span class="cj">}</span>
+      <span class="ca">className</span><span class="cj">=</span><span class="cs">"max-w-md mx-auto p-6
+        bg-white rounded-xl shadow-md space-y-4"</span><span class="ct">&gt;</span>
+
+      <span class="ct">&lt;div&gt;</span>
+        <span class="ct">&lt;label</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"block text-sm font-semibold mb-1"</span><span class="ct">&gt;</span>
+          Name
+        <span class="ct">&lt;/label&gt;</span>
+        <span class="ct">&lt;input</span>
+          <span class="ca">className</span><span class="cj">={`</span>w-full p-2 border rounded
+            <span class="cj">${</span>errors.name ? <span class="cs">'border-red-500'</span> : <span class="cs">'border-gray-300'</span><span class="cj">}`}</span>
+          <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'name'</span>, { required: <span class="cs">'Name is required'</span> })<span class="cj">}</span>
+        <span class="ct">/&gt;</span>
+        <span class="cj">{</span>errors.name &amp;&amp;
+          <span class="ct">&lt;p</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-red-500 text-sm mt-1"</span><span class="ct">&gt;</span><span class="cj">{</span>errors.name.message<span class="cj">}</span><span class="ct">&lt;/p&gt;</span><span class="cj">}</span>
+      <span class="ct">&lt;/div&gt;</span>
+
+      <span class="ct">&lt;div&gt;</span>
+        <span class="ct">&lt;label</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"block text-sm font-semibold mb-1"</span><span class="ct">&gt;</span>Email<span class="ct">&lt;/label&gt;</span>
+        <span class="ct">&lt;input</span>
+          <span class="ca">className</span><span class="cj">={`</span>w-full p-2 border rounded
+            <span class="cj">${</span>errors.email ? <span class="cs">'border-red-500'</span> : <span class="cs">'border-gray-300'</span><span class="cj">}`}</span>
+          <span class="cj">{...</span><span class="cmd">register</span>(<span class="cs">'email'</span>, {
+            required: <span class="cs">'Email is required'</span>,
+            pattern: { value: <span class="ch">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span>, message: <span class="cs">'Invalid email'</span> }
+          })<span class="cj">}</span>
+        <span class="ct">/&gt;</span>
+        <span class="cj">{</span>errors.email &amp;&amp;
+          <span class="ct">&lt;p</span> <span class="ca">className</span><span class="cj">=</span><span class="cs">"text-red-500 text-sm mt-1"</span><span class="ct">&gt;</span><span class="cj">{</span>errors.email.message<span class="cj">}</span><span class="ct">&lt;/p&gt;</span><span class="cj">}</span>
+      <span class="ct">&lt;/div&gt;</span>
+
+      <span class="ct">&lt;button</span> <span class="ca">type</span><span class="cj">=</span><span class="cs">"submit"</span> <span class="ca">disabled</span><span class="cj">={</span>isSubmitting<span class="cj">}</span>
+        <span class="ca">className</span><span class="cj">=</span><span class="cs">"w-full bg-indigo-600 text-white py-2
+          rounded font-semibold hover:bg-indigo-700
+          disabled:opacity-50"</span><span class="ct">&gt;</span>
+        <span class="cj">{</span>isSubmitting ? <span class="cs">'Sending...'</span> : <span class="cs">'Send Message'</span><span class="cj">}</span>
+      <span class="ct">&lt;/button&gt;</span>
+    <span class="ct">&lt;/form&gt;</span>
+  );
+};</pre>
+    </div>
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Live Preview</p>
+      <div class="mock" style="padding:20px;max-width:280px">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Name</label>
+        <input style="width:100%;padding:8px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;box-sizing:border-box;margin-bottom:12px" placeholder="Your name" readonly />
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Email</label>
+        <input style="width:100%;padding:8px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;box-sizing:border-box;margin-bottom:14px" placeholder="you@example.com" readonly />
+        <div class="mock-btn" style="background:#4f46e5;color:#fff;width:100%;text-align:center;box-sizing:border-box">Send Message</div>
+      </div>
+      <div class="info-box" style="margin-top:10px">
+        <p style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px">isSubmitting — built in!</p>
+        <p style="font-size:12px;color:#a0aec0">React Hook Form tracks whether your <code>onSubmit</code> async function is still running. Use it to disable the button and show "Sending..." — no extra useState needed.</p>
+      </div>
+      <div class="succ-box" style="margin-top:8px">
+        <p style="font-size:12px;margin:0"><strong>space-y-4</strong> is a Tailwind trick: it adds vertical margin between direct children automatically. Great for forms — no margin classes needed on each field.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 19 — FORMS RECAP -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Recap</div><div class="slide-number">19 / 26</div>
+  <h2>Forms Recap — Before the AI Build</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="succ-box">
+      <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Setup</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li><code>npm install react-hook-form</code></li>
+        <li><code>useForm()</code> gives register, handleSubmit, errors</li>
+        <li><code>{'{...register(\'field\')}'}</code> on each input</li>
+      </ul>
+    </div>
+    <div class="info-box">
+      <p style="font-size:11px;font-weight:700;color:#6366f1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Validation</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>required, minLength, pattern, min/max</li>
+        <li>Custom messages per rule</li>
+        <li>handleSubmit only calls onSubmit if valid</li>
+      </ul>
+    </div>
+    <div class="pat-box">
+      <p style="font-size:11px;font-weight:700;color:#8b5cf6;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Errors &amp; UX</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#cbd5e0">
+        <li><code>{'{errors.field && <p>...}'}</code></li>
+        <li>Conditional border colour</li>
+        <li><code>isSubmitting</code> for loading state</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:12px">
+    <p style="font-size:13.5px;text-align:center"><strong>Quick check:</strong> What three things does <code>useForm()</code> give you? If you can list them, you're ready for Part 3.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 20 — PART 3 DIVIDER -->
+<div class="slide" style="justify-content:center;align-items:center;text-align:center">
+  <div class="slide-header">XELI AI LABS</div><div class="slide-number">20 / 26</div>
+  <div style="margin-bottom:16px"><span style="font-size:11px;font-weight:700;color:#06b6d4;letter-spacing:3px;text-transform:uppercase">Part 3 of 3</span></div>
+  <p style="font-size:60px;margin-bottom:10px">🤖</p>
+  <h1 style="font-size:46px">Build It Together</h1>
+  <p style="font-size:20px;color:#a0aec0;margin-top:10px">Tailwind + React Hook Form, with AI as your speed boost.</p>
+  <div class="ai-box" style="max-width:700px;margin:20px auto 0">
+    <p style="font-size:14px;color:#06b6d4;font-weight:600">Two big new tools in one day is a lot. AI is great for the part that's mostly memorization — exact class names, regex patterns — so you can focus on the part that matters: understanding the structure and the logic.</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 21 — AI FOR TAILWIND -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">AI + Tailwind</div><div class="slide-number">21 / 26</div>
+  <h2>🤖 Using AI for Tailwind — Speed Without Skipping Learning</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Good Use: Exploring Options</p>
+      <div class="prompt-block" style="margin-bottom:8px">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"Give me 3 different Tailwind class combinations for a pricing card — one minimal, one bold/colourful, one dark mode. Show the JSX for each."</span>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Good Use: Converting Existing CSS</p>
+      <div class="prompt-block" style="margin-bottom:8px">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"Convert this CSS to Tailwind utility classes. Explain each class you choose: [paste CSS]"</span>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Good Use: Responsive Debugging</p>
+      <div class="prompt-block">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"My grid looks right on desktop but the cards overlap on mobile. Here's my className: [paste]. What's wrong?"</span>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 The Trap to Avoid</p>
+        <p style="font-size:13px;color:#fbbf24">If AI gives you <code>className="flex items-center justify-between p-4 ..."</code> with 15 classes — don't just paste and move on. Ask yourself: do I know what each one does? If 2-3 are unfamiliar, ask AI to explain just those.</p>
+      </div>
+      <div class="warn-box" style="margin-bottom:8px">
+        <p style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:4px">⚠️ Why this matters for the homework</p>
+        <p style="font-size:12px;color:#a0aec0">Your homework includes 20 short Tailwind exercises specifically so you build muscle memory with the common classes — without AI. Do those WITHOUT AI first. Then use AI for the bigger landing page / dashboard projects.</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ A good habit: Tailwind Play</p>
+        <p style="font-size:12px;color:#a0aec0">Use <strong>play.tailwindcss.com</strong> — paste AI-suggested classes there first, see them render instantly, tweak live, THEN bring them into your project. Faster feedback loop than restarting your dev server.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 22 — AI FOR FORMS & VALIDATION -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">AI + Forms</div><div class="slide-number">22 / 26</div>
+  <h2>🤖 Using AI for Forms &amp; Validation</h2>
+  <div class="two-col" style="align-items:start;margin-top:8px">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Validation Rules &amp; Regex</p>
+      <div class="prompt-block" style="margin-bottom:8px">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"Write a React Hook Form validation object for a password field: minimum 8 characters, at least one number, at least one uppercase letter. Include clear error messages for each rule."</span>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Debugging a Broken Form</p>
+      <div class="prompt-block" style="margin-bottom:8px">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"My form submits even when fields are empty. I'm using React Hook Form. Here's my code: [paste]. What's wrong?"</span>
+      </div>
+      <p style="font-size:11px;font-weight:700;color:#06b6d4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Understanding errors object</p>
+      <div class="prompt-block">
+        <div class="prompt-label">Prompt:</div>
+        <span style="color:#06b6d4">"Explain what the errors object from React Hook Form looks like when multiple fields have errors. Show me an example with 2 fields failing."</span>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 Why Regex Is a Great AI Use Case</p>
+        <p style="font-size:13px;color:#fbbf24">Regex (the email/phone pattern matching) is genuinely hard even for experienced developers — it has its own confusing syntax. Asking AI to write a regex and EXPLAIN it piece by piece is one of the best uses of AI: you get the tool AND the understanding.</p>
+      </div>
+      <div class="ai-box" style="margin-bottom:8px">
+        <p style="font-size:12px;margin:0">🤖 <strong>Follow-up prompt after getting a regex:</strong> "Break down this regex character by character: [paste regex]. What does each part match?"</p>
+      </div>
+      <div class="succ-box">
+        <p style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:4px">✅ The Golden Rule, Still True</p>
+        <p style="font-size:12px;color:#a0aec0">If AI gives you a validation rule and a regex you don't understand — that's exactly when to ask AI to explain it. Don't paste a regex you can't read into code you'll need to maintain.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 23 — LIVE BUILD: COMBINED -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="ai-tag">Live Build</div><div class="slide-number">23 / 26</div>
+  <h2>Live Build — Styled, Validated Search Form for Your Mini Project</h2>
+  <span class="ai-badge">Class Activity</span>
+  <div class="two-col" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:11px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">We Build This Together (25 mins)</p>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">1</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Install Tailwind + react-hook-form in your mini project (if not already done)</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">2</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Add Tailwind classes to your Navbar and home page cards. Get them looking decent on desktop first.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">3</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Add responsive prefixes (<code>md:</code> / <code>lg:</code>) so the grid adapts. Resize your browser to check.</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0a1628;border:1px solid #06b6d4;border-radius:6px;padding:8px 10px">
+          <span class="step-chip" style="border-color:#06b6d4;color:#06b6d4;background:rgba(6,182,212,.2)">4</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Build a SearchBar component using React Hook Form with one validated field (e.g. "required, min 2 characters")</p>
+        </div>
+        <div style="display:flex;align-items:flex-start;background:#0f1729;border:1px solid #2d3748;border-radius:6px;padding:8px 10px">
+          <span class="step-chip">5</span>
+          <p style="font-size:12px;margin:0;color:#cbd5e0">Style the search input + error message with Tailwind. Test: submit empty, submit 1 character, submit a real query.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="plain-box" style="margin-bottom:8px">
+        <p class="plain-title">🧠 Why a Search Form?</p>
+        <p style="font-size:13px;color:#fbbf24">Every project option (Movie, Recipe, Country) benefits from a validated search bar. It's small enough to finish in class, but uses everything from today: Tailwind for the layout, React Hook Form for validation, both working together.</p>
+      </div>
+      <div class="succ-box" style="margin-bottom:8px">
+        <p style="font-size:11px;font-weight:700;color:#10b981;margin-bottom:4px">✅ End of Class Goal</p>
+        <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+          <li>Tailwind installed and working</li>
+          <li>Navbar + home page cards styled</li>
+          <li>Responsive grid (1 → 2 → 4 columns)</li>
+          <li>A search form with at least 1 validation rule</li>
+          <li>Error message shows and styles correctly</li>
+        </ul>
+      </div>
+      <div class="ai-box">
+        <p style="font-size:12px;margin:0">🤖 Stuck on combining the two? "I have a React Hook Form input. How do I add a conditional Tailwind class that turns the border red when there's a validation error?"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 24 — TAILWIND + FORMS QUICK REFERENCE -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Quick Reference</div><div class="slide-number">24 / 26</div>
+  <h2>Everything on One Slide — Tailwind + React Hook Form</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div class="pat-box">
+      <p class="pat-title">Tailwind Essentials</p>
+      <pre style="font-size:9px;margin:0">Layout: flex grid items-center
+        justify-between gap-4
+Spacing: p-4 px-2 py-1 m-4 mt-2
+Colour: bg-blue-500 text-white
+Text: text-lg font-bold text-center
+Shape: rounded-lg shadow-md border
+Responsive: md: lg: prefixes
+State: hover: focus: disabled:</pre>
+    </div>
+    <div class="pat-box">
+      <p class="pat-title">React Hook Form Setup</p>
+      <pre style="font-size:9px;margin:0">npm install react-hook-form
+
+const {
+  register, handleSubmit,
+  formState: { errors, isSubmitting }
+} = useForm();
+
+&lt;form onSubmit={handleSubmit(onSubmit)}&gt;
+&lt;input {...register('name', {
+  required: 'Required'
+})} /&gt;
+{errors.name && &lt;p&gt;{errors.name.message}&lt;/p&gt;}</pre>
+    </div>
+    <div class="pat-box">
+      <p class="pat-title">Common Validation Rules</p>
+      <pre style="font-size:9px;margin:0">required: 'message'
+minLength: { value: 8, message }
+maxLength: { value: 100, message }
+min: { value: 18, message }
+max: { value: 99, message }
+pattern: { value: /regex/, message }</pre>
+    </div>
+  </div>
+  <div class="pat-box" style="margin-top:10px">
+    <p class="pat-title">The Combined Pattern — Conditional Error Styling</p>
+    <pre style="font-size:10px;margin:0">&lt;input
+  className={`w-full p-2 border rounded ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+  {...register('email', { required: 'Email is required' })}
+/&gt;
+{errors.email && &lt;p className="text-red-500 text-sm mt-1"&gt;{errors.email.message}&lt;/p&gt;}</pre>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <div class="succ-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>Tailwind:</strong> play.tailwindcss.com for fast experiments</p>
+    </div>
+    <div class="succ-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>VS Code:</strong> Tailwind CSS IntelliSense extension</p>
+    </div>
+    <div class="succ-box" style="flex:1;padding:8px 12px">
+      <p style="font-size:12px;margin:0"><strong>RHF Docs:</strong> react-hook-form.com</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 25 — SUMMARY -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Summary</div><div class="slide-number">25 / 26</div>
+  <h2>Class 19+20 — What You Now Know</h2>
+  <div class="three-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:1px solid #38bdf8;border-radius:8px;padding:12px">
+      <p style="font-size:10px;font-weight:700;color:#38bdf8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Tailwind CSS</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>Utility classes = describe, don't name</li>
+        <li>Spacing scale: number × 4px</li>
+        <li>Colours: name-shade (blue-500)</li>
+        <li>Responsive: sm: md: lg: xl:</li>
+        <li>States: hover: focus: disabled:</li>
+        <li>One file, no CSS imports</li>
+      </ul>
+    </div>
+    <div style="background:#0f1729;border:1px solid #f472b6;border-radius:8px;padding:12px">
+      <p style="font-size:10px;font-weight:700;color:#f472b6;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Forms &amp; Validation</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>useForm() → register, handleSubmit, errors</li>
+        <li>{'{...register(\'field\', {rules})'}}</li>
+        <li>required, minLength, pattern, min/max</li>
+        <li>{'{errors.field && <p>message}'}</li>
+        <li>isSubmitting for loading state</li>
+      </ul>
+    </div>
+    <div class="ai-box" style="border-radius:8px">
+      <p style="font-size:10px;font-weight:700;color:#06b6d4;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">AI Workflow</p>
+      <ul style="font-size:11.5px;margin-left:14px;line-height:1.7;color:#a0aec0">
+        <li>AI for exploring style options</li>
+        <li>AI for regex + explanations</li>
+        <li>Tailwind Play for fast iteration</li>
+        <li>Practice exercises WITHOUT AI first</li>
+        <li>Bigger builds: AI-assisted, understood</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:12px;background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(244,114,182,.15));border:1px solid rgba(244,114,182,.4);border-radius:8px;padding:14px;text-align:center">
+    <p style="font-size:15px;font-weight:800;color:#f5f7fa;margin-bottom:4px">Your mini project just leveled up. 🎨📝</p>
+    <p style="font-size:13px;color:#a0aec0;max-width:700px;margin:0 auto">It can now look genuinely professional AND collect user input safely. These are the two things that separate a "coding exercise" from "something you'd be proud to put in your portfolio."</p>
+  </div>
+</div>
+
+
+<!-- SLIDE 26 — HOMEWORK -->
+<div class="slide">
+  <div class="slide-header">XELI AI LABS</div><div class="section-tag">Homework</div><div class="slide-number">26 / 26</div>
+  <h2>Class 19+20 Homework — 2 Projects + Quick Drills</h2>
+  <div class="two-col" style="margin-top:10px">
+    <div style="background:#0f1729;border:2px solid #38bdf8;border-radius:10px;padding:16px">
+      <p style="font-size:11px;font-weight:700;color:#38bdf8;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Project 1 — 50 pts</p>
+      <p style="font-size:15px;font-weight:700;color:#f5f7fa;margin-bottom:8px">Restyle Your Mini Project with Tailwind</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>Install Tailwind in your mini project</li>
+        <li>Restyle Navbar, cards, and detail page</li>
+        <li>Responsive grid: 1 col mobile → 2 tablet → 3-4 desktop</li>
+        <li>Hover states on cards and buttons</li>
+        <li>No custom CSS files remaining</li>
+      </ul>
+      <div class="ai-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#06b6d4;margin:0">🤖 Do the 20 quick drills (separate sheet) WITHOUT AI first. Then use AI for this bigger restyle.</p>
+      </div>
+    </div>
+    <div style="background:#0f1729;border:2px solid #f472b6;border-radius:10px;padding:16px">
+      <p style="font-size:11px;font-weight:700;color:#f472b6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Project 2 — 50 pts</p>
+      <p style="font-size:15px;font-weight:700;color:#f5f7fa;margin-bottom:8px">Validated Search/Contact Form</p>
+      <ul style="font-size:12px;margin-left:14px;line-height:1.75;color:#a0aec0">
+        <li>Add a search bar OR contact form to your mini project</li>
+        <li>Built with React Hook Form</li>
+        <li>Minimum 2 validation rules with custom messages</li>
+        <li>Styled with Tailwind, errors shown in red</li>
+        <li>isSubmitting state on the submit button</li>
+      </ul>
+      <div class="ai-box" style="margin-top:8px;padding:6px 10px">
+        <p style="font-size:11px;color:#06b6d4;margin:0">🤖 Use AI to write your regex pattern — then ask it to explain the regex piece by piece.</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:10px">
+    <p style="font-size:13px;text-align:center"><strong>⏱ Estimated time: 5–6 hours total &nbsp;•&nbsp; Plus: 20 quick Tailwind drills (~30 mins, do these without AI)</strong></p>
+  </div>
+</div>
+
+</body>
+</html>
