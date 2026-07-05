@@ -26,7 +26,7 @@ function RecipeDetail() {
   }, [id]);
 
 function saveToFavorites() {
-  if (!recipe) return;
+  if (!recipe?.idMeal) return;
 
   const stored = JSON.parse(localStorage.getItem("favorites")) || [];
 
@@ -37,8 +37,6 @@ function saveToFavorites() {
   const updated = [...stored, recipe];
 
   localStorage.setItem("favorites", JSON.stringify(updated));
-
-  console.log("Saved to favorites:", recipe.strMeal);
 }
 
   function getIngredients(recipe) {
@@ -57,19 +55,20 @@ function saveToFavorites() {
   }
 
   function addToShoppingList() {
+    if (!recipe) return;
+
     const stored = JSON.parse(localStorage.getItem("shoppingList")) || [];
 
-    const newItems = [];
+    const ingredients = [];
 
     for (let i = 1; i <= 20; i++) {
-      const meal = recipe[`strMeal${i}`];
-
-      if (meal && meal.trim() !== "") {
-        newItems.push(meal);
+      const ingredient = recipe[`strIngredient${i}`];
+      if (ingredient && ingredient.trim() !== "") {
+        ingredients.push(ingredient);
       }
     }
 
-    const updated = [...new Set([...stored, ...newItems])];
+    const updated = [...stored, ...ingredients];
 
     localStorage.setItem("shoppingList", JSON.stringify(updated));
   }
@@ -78,39 +77,74 @@ function saveToFavorites() {
   if (error) return <h2>{error}</h2>;
 
   return (
-    <div className="container recipe-detail">
-      <h1 className="recipe-title">{recipe.strMeal}</h1>
+    <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+        <img
+          src={recipe.strMealThumb}
+          alt={recipe.strMeal}
+          className="w-full h-112.5 object-cover"
+        />
 
-      <img
-        className="recipe-image"
-        src={recipe.strMealThumb}
-        alt={recipe.strMeal}
-      />
+        <div className="p-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-6">
+            {recipe.strMeal}
+          </h1>
 
-      <button className="button-group" onClick={saveToFavorites}>
-        ❤️ Save to Favorites
-      </button>
-      <button onClick={addToShoppingList}>🛒 Add to Shopping List</button>
+          <div className="flex flex-wrap gap-4 mb-8">
+            <button
+              onClick={saveToFavorites}
+              className="bg-red-500 text-white px-5 py-3 rounded-xl hover:bg-red-600 transition"
+            >
+              ❤️ Save to Favorites
+            </button>
 
-      <section className="recipe-section">
-        <h2>Instructions</h2>
-        <p>{recipe.strInstructions}</p>
+            <button
+              onClick={addToShoppingList}
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg cursor-pointer"
+            >
+              🛒 Add to Shopping List
+            </button>
+          </div>
 
-        <h2>Ingredients</h2>
-        <ul>
-          {getIngredients(recipe).map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+          <div className="grid md:grid-cols-2 gap-10">
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
 
-        <h2>Nutrition</h2>
-        <ul>
-          <li>Calories: ~350 kcal</li>
-          <li>Protein: ~25g</li>
-          <li>Carbs: ~30g</li>
-          <li>Fat: ~15g</li>
-        </ul>
-      </section>
+              <ul className="space-y-3">
+                {getIngredients(recipe).map((item, index) => (
+                  <li key={index} className="bg-gray-100 p-3 rounded-lg">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Nutrition</h2>
+
+              <div className="space-y-3">
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  Calories: ~350 kcal
+                </div>
+
+                <div className="bg-gray-100 p-3 rounded-lg">Protein: ~25g</div>
+
+                <div className="bg-gray-100 p-3 rounded-lg">Carbs: ~30g</div>
+
+                <div className="bg-gray-100 p-3 rounded-lg">Fat: ~15g</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">Instructions</h2>
+
+            <p className="text-gray-700 leading-8 whitespace-pre-line">
+              {recipe.strInstructions}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
